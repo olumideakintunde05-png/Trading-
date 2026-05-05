@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#080810"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>Daniel Wisdom Hub</title>
+<meta name="description" content="Daily wisdom quotes, motivational quotes, life lessons and more. Get inspired every day with Daniel Wisdom Hub."/>
+<meta property="og:title" content="Daniel Wisdom Hub — Daily Wisdom"/>
+<meta property="og:description" content="Daily wisdom quotes to inspire your life."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ╔══════════════════════════════════════════╗
+   ║  DESIGN TOKENS                           ║
+   ╚══════════════════════════════════════════╝ */
+:root{
+  --ink:   #080810;
+  --ink1:  #0f0f1a;
+  --ink2:  #161624;
+  --ink3:  #1e1e2e;
+  --ink4:  #27273c;
+  --wire:  rgba(255,255,255,0.07);
+  --wire2: rgba(255,255,255,0.13);
+  --snow:  #f0effe;
+  --snow2: #a8a6c8;
+  --fog:   #56547a;
+  /* brand gradients */
+  --rose:  #ff6b9d;
+  --amber: #ffb347;
+  --sky:   #6ec6ff;
+  --lime:  #90f08c;
+  --grad-a: linear-gradient(135deg,#ff6b9d,#ffb347);
+  --grad-b: linear-gradient(135deg,#6ec6ff,#90f08c);
+  --grad-c: linear-gradient(135deg,#c084fc,#ff6b9d);
+  --grad-d: linear-gradient(135deg,#ffb347,#ff6b9d,#c084fc);
+  /* layout */
+  --nav-h: 60px;
+  --bot-h: 72px;
+  --r:     16px;
+  --r2:    24px;
+  /* type */
+  --serif: 'Fraunces', Georgia, serif;
+  --sans:  'Outfit', system-ui, sans-serif;
+  /* motion */
+  --ease:  cubic-bezier(0.4,0,0.2,1);
+  --spring:cubic-bezier(0.34,1.56,0.64,1);
+  --snap:  cubic-bezier(0.23,1,0.32,1);
+}
+
+/* ╔══════════════════════════════════════════╗
+   ║  LIGHT MODE TOKENS                       ║
+   ╚══════════════════════════════════════════╝ */
+body.light{
+  --ink:   #f5f4ff;
+  --ink1:  #ebe9ff;
+  --ink2:  #ffffff;
+  --ink3:  #f0eefe;
+  --ink4:  #e4e1ff;
+  --wire:  rgba(0,0,0,0.07);
+  --wire2: rgba(0,0,0,0.12);
+  --snow:  #1a1830;
+  --snow2: #4a4870;
+  --fog:   #8888aa;
+}
+body.light #topnav{background:rgba(245,244,255,0.92)}
+body.light #botnav{background:rgba(245,244,255,0.96)}
+body.light .vs::before{background:linear-gradient(180deg,rgba(245,244,255,0.04) 0%,rgba(245,244,255,0.3) 52%,rgba(245,244,255,0.94) 100%)}
+body.light .hero-band::before{background:linear-gradient(180deg,rgba(245,244,255,0.05) 0%,rgba(245,244,255,0.45) 50%,rgba(245,244,255,0.97) 100%)}
+body.light .qc::before{background:linear-gradient(180deg,transparent 25%,rgba(245,244,255,0.4) 55%,rgba(245,244,255,0.97) 100%)}
+body.light .qc-text{color:var(--snow)}
+body.light .qc-author{color:rgba(26,24,48,0.55)}
+body.light #fsm{background:var(--ink)}
+body.light .fs-slide::before{background:linear-gradient(180deg,rgba(245,244,255,0.05) 0%,rgba(245,244,255,0.4) 45%,rgba(245,244,255,0.98) 100%)}
+body.light .fs-q{color:var(--snow)}
+body.light .fs-a{color:rgba(26,24,48,0.55)}
+body.light .fs-bar{background:rgba(245,244,255,0.97)}
+body.light #reader{background:var(--ink)}
+body.light .rd-top{background:rgba(245,244,255,0.96)}
+body.light #allArtsModal{background:var(--ink)}
+body.light .cb-slide::before{background:linear-gradient(180deg,rgba(245,244,255,0.04) 0%,rgba(245,244,255,0.3) 45%,rgba(245,244,255,0.96) 100%)}
+body.light .cb-q{color:var(--snow)}
+body.light .cb-a{color:rgba(26,24,48,0.5)}
+body.light #catBrowser{background:var(--ink)}
+body.light .hc-card::before{background:linear-gradient(180deg,rgba(245,244,255,0.05) 0%,rgba(245,244,255,0.3) 40%,rgba(245,244,255,0.97) 100%)}
+body.light .cat-hero-card::before{background:linear-gradient(180deg,transparent 30%,rgba(245,244,255,0.94) 100%)}
+body.light .cat-hero-name{color:var(--snow)}
+body.light .hc-name{color:var(--snow)}
+body.light #toast{background:var(--ink4);color:var(--snow)}
+body.light .np-card{background:var(--ink2)}
+body.light .search-bar input{color:var(--snow)}
+body.light ::-webkit-scrollbar-thumb{background:rgba(255,107,157,0.5)}
+
+/* ╔══════════════════════════════════════════╗
+   ║  RESET + BASE                            ║
+   ╚══════════════════════════════════════════╝ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{
+  background:var(--ink);color:var(--snow);
+  font-family:var(--sans);min-height:100vh;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s;
+}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-thumb{background:rgba(255,107,157,0.4);border-radius:9px}
+button,a{cursor:pointer;font-family:inherit;border:none;background:none;color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ╔══════════════════════════════════════════╗
+   ║  TOP NAVIGATION                          ║
+   ╚══════════════════════════════════════════╝ */
+#topnav{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--nav-h);z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;
+  background:rgba(8,8,16,0.88);
+  backdrop-filter:blur(32px) saturate(180%);
+  border-bottom:1px solid var(--wire);
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-gem{
+  width:32px;height:32px;border-radius:10px;
+  background:var(--grad-a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+  box-shadow:0 0 20px rgba(255,107,157,0.35);
+}
+.brand-name{
+  font-family:var(--serif);font-weight:700;font-size:16px;
+  font-style:italic;letter-spacing:-0.02em;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-right{display:flex;align-items:center;gap:6px}
+.ni{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--ink3);border:1px solid var(--wire);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all .2s var(--ease);position:relative;
+}
+.ni:hover{background:var(--ink4);transform:scale(1.08)}
+.ni-dot::after{
+  content:'';position:absolute;top:6px;right:6px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--rose);border:2px solid var(--ink);
+}
+/* search bar */
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--ink2);border:1px solid var(--wire);
+  border-radius:50px;padding:0 14px;
+  flex:1;max-width:220px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.search-bar:focus-within{border-color:var(--rose);box-shadow:0 0 0 3px rgba(255,107,157,0.15)}
+.search-bar svg{width:14px;height:14px;opacity:.35;flex-shrink:0;color:var(--snow)}
+.search-bar input{
+  background:none;border:none;outline:none;
+  color:var(--snow);font-family:var(--sans);font-size:13px;
+  width:100%;padding:8px 0;
+}
+.search-bar input::placeholder{color:var(--fog)}
+
+/* ╔══════════════════════════════════════════╗
+   ║  VIEWS                                   ║
+   ╚══════════════════════════════════════════╝ */
+.view{display:none;padding-top:var(--nav-h);padding-bottom:calc(var(--bot-h) + 12px);min-height:100vh}
+.view.on{display:block}
+#view-explore{padding-top:var(--nav-h);padding-bottom:0}
+
+/* ╔══════════════════════════════════════════╗
+   ║  FEATURED HERO BAND                      ║
+   ╚══════════════════════════════════════════╝ */
+.hero-band{
+  margin:14px 16px;border-radius:var(--r2);overflow:hidden;
+  position:relative;height:clamp(200px,55vw,320px);
+  background-size:cover;background-position:center;
+  cursor:pointer;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  transition:transform .3s var(--ease);
+}
+.hero-band:active{transform:scale(0.98)}
+.hero-band::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,8,16,0.05) 0%,rgba(8,8,16,0.5) 50%,rgba(8,8,16,0.97) 100%);
+}
+.hero-body{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:20px 20px 22px;z-index:2;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,107,157,0.18);border:1px solid rgba(255,107,157,0.4);
+  border-radius:50px;padding:4px 12px;margin-bottom:10px;
+  font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--rose);
+}
+.hero-q{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(17px,5vw,24px);line-height:1.3;
+  color:#fff;margin-bottom:6px;
+}
+.hero-a{font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:0.4px}
+.hero-nav{position:absolute;top:16px;right:16px;display:flex;gap:6px;z-index:3}
+.hero-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.3);cursor:pointer;
+  transition:all .3s var(--ease);
+}
+.hero-dot.on{width:22px;border-radius:3px;background:#fff}
+
+/* ╔══════════════════════════════════════════╗
+   ║  SECTION CHROME                          ║
+   ╚══════════════════════════════════════════╝ */
+.sec{padding:0 16px}
+.sec-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0 12px;
+}
+.sec-ttl{
+  font-size:15px;font-weight:700;
+  display:flex;align-items:center;gap:6px;
+}
+.sec-more{
+  font-size:12px;font-weight:600;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* ╔══════════════════════════════════════════╗
+   ║  QUOTE CARD GRID                         ║
+   ╚══════════════════════════════════════════╝ */
+.qg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:480px){.qg{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:700px){.qg{grid-template-columns:repeat(4,1fr)}}
+
+.qc{
+  border-radius:var(--r);overflow:hidden;
+  position:relative;min-height:220px;
+  background-size:cover;background-position:center;
+  cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;
+  transition:transform .25s var(--ease),box-shadow .25s;
+  animation:popIn .4s var(--spring) both;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+.qc::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 25%,rgba(8,8,16,0.45) 55%,rgba(8,8,16,0.97) 100%);
+}
+.qc:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 16px 48px rgba(0,0,0,0.6)}
+.qc:active{transform:scale(0.96)}
+@keyframes popIn{from{opacity:0;transform:translateY(14px) scale(0.96)}to{opacity:1;transform:none}}
+
+.qc-inner{position:relative;z-index:2;padding:10px 9px 9px}
+.qc-text{
+  font-family:var(--serif);font-style:italic;
+  font-size:13px;line-height:1.45;color:#fff;
+  margin-bottom:5px;
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+}
+.qc-author{
+  font-size:9px;font-weight:700;letter-spacing:0.8px;
+  text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:7px;
+}
+.qc-acts{display:flex;gap:4px;flex-wrap:wrap}
+.qa{
+  background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.14);
+  border-radius:50px;color:#fff;
+  font-size:10px;font-family:var(--sans);font-weight:600;
+  padding:4px 8px;display:flex;align-items:center;gap:3px;
+  transition:all .18s var(--ease);white-space:nowrap;
+}
+.qa:hover{background:rgba(255,255,255,0.2)}
+.qa:active{transform:scale(0.88)}
+.qa.sv{background:rgba(255,107,157,0.25);border-color:rgba(255,107,157,0.5);color:#ffb3d0}
+
+/* feed loader */
+.fload{
+  display:none;justify-content:center;align-items:center;
+  gap:9px;padding:22px;color:var(--fog);font-size:12px;
+}
+.fload.on{display:flex}
+.spin{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--wire2);border-top-color:var(--rose);
+  animation:rotate .7s linear infinite;
+}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:55px 20px}
+.empty-i{font-size:46px;opacity:.18;margin-bottom:10px}
+.empty-t{font-size:15px;font-weight:700;color:var(--fog)}
+.empty-s{font-size:12px;color:var(--fog);margin-top:5px}
+
+/* ╔══════════════════════════════════════════╗
+   ║  TODAY CARD                              ║
+   ╚══════════════════════════════════════════╝ */
+.today-card{
+  border-radius:var(--r2);overflow:hidden;
+  position:relative;padding:30px 22px;
+  background-size:cover;background-position:center;
+  cursor:pointer;box-shadow:0 12px 40px rgba(0,0,0,0.55);
+  transition:transform .2s var(--ease);
+}
+.today-card:active{transform:scale(0.99)}
+.today-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(145deg,rgba(192,84,252,0.88),rgba(255,107,157,0.75),rgba(255,179,71,0.6));
+}
+.today-inner{position:relative;z-index:2}
+.today-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);
+  border-radius:50px;padding:4px 14px;margin-bottom:14px;
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#fff;
+}
+.today-q{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(18px,5.5vw,30px);line-height:1.3;
+  color:#fff;margin-bottom:10px;
+}
+.today-a{font-size:12px;font-weight:600;color:rgba(255,255,255,0.6)}
+.today-acts{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.tb{
+  padding:10px 20px;border-radius:50px;
+  font-family:var(--sans);font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+  transition:all .18s var(--ease);
+}
+.tb:active{transform:scale(0.92)}
+.tb.w{background:#fff;color:#111}
+.tb.g{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);color:#fff}
+
+/* ╔══════════════════════════════════════════╗
+   ║  EXPLORE — TIKTOK FEED                   ║
+   ╚══════════════════════════════════════════╝ */
+.viral-wrap{
+  height:calc(100vh - var(--nav-h) - var(--bot-h));
+  overflow-y:scroll;scroll-snap-type:y mandatory;
+  scrollbar-width:none;overscroll-behavior:contain;
+}
+.viral-wrap::-webkit-scrollbar{display:none}
+.vs{
+  height:calc(100vh - var(--nav-h) - var(--bot-h));
+  width:100%;scroll-snap-align:start;scroll-snap-stop:always;
+  position:relative;background-size:cover;background-position:center;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.vs::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,8,16,0.08) 0%,rgba(8,8,16,0.5) 52%,rgba(8,8,16,0.96) 100%);
+  z-index:1;
+}
+.vs-prog{position:absolute;top:0;left:0;right:0;height:2.5px;background:rgba(255,255,255,0.12);z-index:4}
+.vs-bar{height:100%;background:var(--grad-a);width:0%;transition:width .1s linear}
+.vs-side{
+  position:absolute;right:12px;bottom:160px;
+  z-index:10;display:flex;flex-direction:column;gap:14px;
+}
+.vs-sib{
+  display:flex;flex-direction:column;align-items:center;
+  gap:3px;color:#fff;
+}
+.vs-sic{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;border:1px solid rgba(255,255,255,0.15);
+  transition:all .2s;
+}
+.vs-sib:active .vs-sic{transform:scale(0.84)}
+.vs-sib.liked .vs-sic{
+  background:rgba(239,68,68,0.22);
+  border-color:rgba(239,68,68,0.5);
+  animation:heartPop .35s var(--spring);
+}
+.vs-sib.liked .vs-sil{color:#f87171}
+@keyframes heartPop{
+  0%{transform:scale(1)}
+  40%{transform:scale(1.38)}
+  70%{transform:scale(0.88)}
+  100%{transform:scale(1)}
+}
+.vs-sil{font-size:9px;font-weight:700;color:rgba(255,255,255,0.55)}
+.vs-body{position:relative;z-index:2;padding:18px 80px 20px 16px}
+.vs-cat{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;
+}
+.vs-q{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(22px,6.5vw,36px);line-height:1.28;
+  color:#fff;margin-bottom:10px;text-shadow:0 2px 20px rgba(0,0,0,0.4);
+}
+.vs-a{font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);margin-bottom:16px}
+.vs-acts{display:flex;gap:8px}
+.vs-btn{
+  padding:10px 20px;border-radius:50px;
+  font-family:var(--sans);font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+  transition:all .18s var(--ease);
+}
+.vs-btn:active{transform:scale(0.92)}
+.vs-btn.w{background:rgba(255,255,255,0.92);color:#111}
+.vs-btn.t{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);color:#fff}
+
+/* ╔══════════════════════════════════════════╗
+   ║  FULLSCREEN MODAL (Swipeable Viewer)     ║
+   ╚══════════════════════════════════════════╝ */
+#fsm{
+  position:fixed;inset:0;z-index:800;
+  display:flex;flex-direction:column;
+  background:var(--ink);
+  transform:translateY(100%);
+  transition:transform .4s var(--snap);
+}
+#fsm.open{transform:translateY(0)}
+.fs-top{
+  position:absolute;top:0;left:0;right:0;
+  height:60px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 16px;
+  z-index:4;
+  background:linear-gradient(180deg,rgba(8,8,16,0.85) 0%,transparent 100%);
+}
+.fs-counter{
+  font-family:var(--sans);font-size:11px;font-weight:700;
+  color:rgba(255,255,255,0.5);letter-spacing:0.5px;
+}
+.fs-close{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;backdrop-filter:blur(8px);
+  transition:all .2s;
+}
+.fs-close:hover{background:rgba(255,255,255,0.2)}
+.fs-track-wrap{flex:1;overflow:hidden;position:relative}
+.fs-track{
+  display:flex;height:100%;
+  transition:transform .38s var(--ease);
+  will-change:transform;
+}
+.fs-slide{
+  flex-shrink:0;width:100vw;height:100%;
+  background-size:cover;background-position:center;
+  position:relative;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.fs-slide::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,8,16,0.05) 0%,rgba(8,8,16,0.42) 45%,rgba(8,8,16,0.98) 100%);
+}
+.fs-content{position:relative;z-index:2;padding:24px 22px 20px}
+.fs-cat{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;
+}
+.fs-q{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(22px,6vw,38px);line-height:1.28;
+  color:#fff;margin-bottom:10px;
+  text-shadow:0 2px 24px rgba(0,0,0,0.5);
+}
+.fs-a{font-size:13px;font-weight:600;color:rgba(255,255,255,0.52);margin-bottom:16px}
+.fs-hint{
+  position:absolute;bottom:120px;left:50%;
+  transform:translateX(-50%);
+  font-size:11px;color:rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);
+  padding:6px 16px;border-radius:50px;letter-spacing:0.5px;
+  transition:opacity 1s;z-index:5;pointer-events:none;
+}
+.fs-bar{
+  padding:14px 16px 16px;
+  background:rgba(8,8,16,0.94);backdrop-filter:blur(24px);
+  border-top:1px solid var(--wire);
+  display:flex;gap:8px;
+  padding-bottom:max(16px, env(safe-area-inset-bottom));
+}
+.fs-btn{
+  flex:1;padding:12px 10px;border-radius:50px;
+  font-family:var(--sans);font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:all .18s var(--ease);
+}
+.fs-btn:active{transform:scale(0.92)}
+.fs-btn.wh{background:#fff;color:#111}
+.fs-btn.gst{background:var(--ink3);border:1px solid var(--wire2);color:var(--snow)}
+.fs-btn.sv{background:rgba(255,107,157,0.22);border:1px solid rgba(255,107,157,0.45);color:var(--rose)}
+.fs-arr{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#fff;transition:all .2s;
+}
+.fs-arr:hover{background:rgba(255,255,255,0.18)}
+.fs-arr.l{left:14px}
+.fs-arr.r{right:14px}
+
+/* ╔══════════════════════════════════════════╗
+   ║  HOME CATEGORY GRID                      ║
+   ╚══════════════════════════════════════════╝ */
+.home-cat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  padding-bottom:8px;
+}
+.hc-card{
+  border-radius:var(--r2);overflow:hidden;
+  position:relative;aspect-ratio:3/4;
+  cursor:pointer;background-size:cover;background-position:center;
+  transition:transform .25s var(--ease),box-shadow .25s;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  animation:popIn .4s var(--spring) both;
+}
+.hc-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 18px 48px rgba(0,0,0,0.7)}
+.hc-card:active{transform:scale(0.96)}
+.hc-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,8,16,0.08) 0%,rgba(8,8,16,0.35) 40%,rgba(8,8,16,0.97) 100%);
+}
+.hc-grad-bar{
+  position:absolute;top:0;left:0;right:0;height:3px;z-index:3;
+}
+.hc-body{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:16px 14px 18px;z-index:2;
+}
+.hc-icon{font-size:26px;margin-bottom:7px;line-height:1}
+.hc-name{
+  font-family:var(--serif);font-style:italic;
+  font-size:20px;font-weight:700;
+  color:#fff;line-height:1.1;margin-bottom:4px;
+}
+.hc-cnt{
+  font-size:10px;font-weight:700;letter-spacing:0.5px;
+  color:rgba(255,255,255,0.45);margin-bottom:10px;
+}
+.hc-preview{
+  font-family:var(--serif);font-style:italic;
+  font-size:12px;line-height:1.45;
+  color:rgba(255,255,255,0.65);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin-bottom:10px;
+}
+.hc-tap{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  border-radius:50px;padding:6px 14px;
+  font-size:10px;font-weight:700;letter-spacing:0.5px;color:#fff;
+  backdrop-filter:blur(6px);
+  transition:background .2s;
+}
+.hc-card:hover .hc-tap{background:rgba(255,255,255,0.22)}
+
+/* ╔══════════════════════════════════════════╗
+   ║  CATEGORY QUOTE BROWSER (TikTok scroll)  ║
+   ╚══════════════════════════════════════════╝ */
+#catBrowser{
+  position:fixed;inset:0;z-index:600;
+  background:var(--ink);
+  transform:translateX(100%);
+  transition:transform .38s var(--snap);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+#catBrowser.open{transform:translateX(0)}
+.cb-top{
+  position:absolute;top:0;left:0;right:0;z-index:20;
+  background:linear-gradient(180deg,rgba(8,8,16,0.92) 0%,transparent 100%);
+  padding:14px 16px 28px;
+  display:flex;align-items:center;gap:12px;
+}
+.cb-back{
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  border-radius:50px;padding:8px 18px;
+  font-family:var(--sans);font-size:12px;font-weight:700;
+  color:#fff;flex-shrink:0;backdrop-filter:blur(10px);
+  transition:background .2s;
+}
+.cb-back:hover{background:rgba(255,255,255,0.22)}
+.cb-info{flex:1;min-width:0}
+.cb-title{
+  font-family:var(--serif);font-style:italic;
+  font-size:18px;font-weight:700;color:#fff;
+  text-shadow:0 1px 8px rgba(0,0,0,0.5);
+}
+.cb-count{
+  font-size:10px;font-weight:700;
+  color:rgba(255,255,255,0.5);
+  letter-spacing:0.5px;margin-top:2px;
+}
+/* The TikTok scroll feed inside the browser */
+.cb-feed{
+  flex:1;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+  scrollbar-width:none;
+  overscroll-behavior:contain;
+}
+.cb-feed::-webkit-scrollbar{display:none}
+/* Each full-screen slide */
+.cb-slide{
+  height:100vh;
+  width:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  position:relative;
+  background-size:cover;
+  background-position:center;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  flex-shrink:0;
+}
+.cb-slide::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(8,8,16,0.04) 0%,
+    rgba(8,8,16,0.3) 45%,
+    rgba(8,8,16,0.95) 100%);
+  z-index:1;
+}
+/* progress bar at top of each slide */
+.cb-prog{
+  position:absolute;top:0;left:0;right:0;
+  height:2px;background:rgba(255,255,255,0.1);z-index:5;
+}
+.cb-bar{height:100%;background:var(--grad-a);width:0}
+/* right side action buttons */
+.cb-side{
+  position:absolute;right:14px;bottom:170px;
+  z-index:10;display:flex;flex-direction:column;gap:16px;
+}
+.cb-sib{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.cb-sic{
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(255,255,255,0.1);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;border:1px solid rgba(255,255,255,0.15);
+  transition:transform .2s var(--spring),background .2s;
+}
+.cb-sib:active .cb-sic{transform:scale(0.82)}
+.cb-sib.saved .cb-sic{
+  background:rgba(255,107,157,0.3);
+  border-color:rgba(255,107,157,0.6);
+}
+.cb-sil{
+  font-size:9px;font-weight:700;
+  color:rgba(255,255,255,0.55);
+}
+/* bottom text area */
+.cb-body{
+  position:relative;z-index:2;
+  padding:20px 80px 24px 18px;
+}
+.cb-cat-tag{
+  font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px;
+}
+.cb-q{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(20px,5.5vw,32px);line-height:1.3;
+  color:#fff;margin-bottom:10px;
+  text-shadow:0 2px 20px rgba(0,0,0,0.5);
+}
+.cb-a{
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,0.5);
+  margin-bottom:18px;
+}
+.cb-btns{
+  display:flex;gap:8px;flex-wrap:wrap;
+  padding-bottom:max(18px, env(safe-area-inset-bottom));
+}
+.cb-btn{
+  padding:10px 20px;border-radius:50px;
+  font-family:var(--sans);font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+  transition:all .18s var(--ease);
+}
+.cb-btn:active{transform:scale(0.91)}
+.cb-btn.wh{background:rgba(255,255,255,0.9);color:#111}
+.cb-btn.tr{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#fff}
+/* swipe hint */
+.cb-swipe-hint{
+  position:absolute;bottom:130px;left:50%;transform:translateX(-50%);
+  font-size:11px;color:rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);
+  padding:6px 18px;border-radius:50px;
+  z-index:15;pointer-events:none;
+  transition:opacity .8s;white-space:nowrap;
+}
+/* empty state */
+.cb-empty{
+  height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;
+  color:var(--fog);
+}
+.cb-empty-i{font-size:52px;opacity:.18}
+.cb-empty-t{font-size:16px;font-weight:700}
+.cb-empty-s{font-size:12px;}
+
+/* ╔══════════════════════════════════════════╗
+   ║  CATEGORIES VIEW                         ║
+   ╚══════════════════════════════════════════╝ */
+.cat-hero-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+  padding:14px 16px;
+}
+.cat-hero-card{
+  border-radius:var(--r);overflow:hidden;
+  position:relative;aspect-ratio:1/1.1;
+  cursor:pointer;background-size:cover;background-position:center;
+  transition:transform .22s var(--ease);
+  box-shadow:0 8px 28px rgba(0,0,0,0.45);
+}
+.cat-hero-card:hover{transform:scale(1.03)}
+.cat-hero-card:active{transform:scale(0.97)}
+.cat-hero-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 30%,rgba(8,8,16,0.94) 100%);
+}
+.cat-hero-inner{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:14px 12px;z-index:2;
+}
+.cat-hero-icon{font-size:24px;margin-bottom:5px}
+.cat-hero-name{
+  font-family:var(--serif);font-style:italic;
+  font-size:18px;font-weight:700;color:#fff;line-height:1.1;
+}
+.cat-hero-cnt{font-size:10px;color:rgba(255,255,255,0.45);margin-top:3px;font-weight:600;letter-spacing:0.5px}
+.cat-hero-grad{
+  position:absolute;top:0;left:0;right:0;
+  height:4px;
+}
+
+/* ╔══════════════════════════════════════════╗
+   ║  SAVED VIEW                              ║
+   ╚══════════════════════════════════════════╝ */
+.saved-header{
+  padding:24px 16px 8px;
+  font-family:var(--serif);font-style:italic;
+  font-size:28px;font-weight:700;
+}
+.saved-header span{
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* ╔══════════════════════════════════════════╗
+   ║  TRENDING VIEW                           ║
+   ╚══════════════════════════════════════════╝ */
+.trend-list{display:flex;flex-direction:column;gap:0;padding:0 16px}
+.trend-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--wire);
+  cursor:pointer;transition:all .2s var(--ease);
+}
+.trend-item:hover{padding-left:6px}
+.trend-rank{
+  width:28px;flex-shrink:0;text-align:center;
+  font-size:18px;font-weight:800;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+.trend-img{
+  width:58px;height:58px;border-radius:12px;flex-shrink:0;
+  background-size:cover;background-position:center;
+}
+.trend-body{flex:1;min-width:0}
+.trend-q{
+  font-family:var(--serif);font-style:italic;
+  font-size:14px;line-height:1.35;color:var(--snow);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.trend-a{font-size:10px;font-weight:700;color:var(--fog);margin-top:3px;text-transform:uppercase;letter-spacing:0.5px}
+.trend-stats{
+  display:flex;align-items:center;gap:4px;margin-top:5px;
+}
+.trend-stat{
+  font-size:9px;font-weight:700;color:var(--fog);
+  background:var(--ink2);border:1px solid var(--wire);
+  border-radius:50px;padding:2px 7px;
+}
+.trend-arrow{font-size:16px;color:var(--fog);flex-shrink:0}
+
+/* ╔══════════════════════════════════════════╗
+   ║  PROFILE VIEW                            ║
+   ╚══════════════════════════════════════════╝ */
+.prof-hero{
+  position:relative;padding:36px 20px 30px;text-align:center;
+  background:linear-gradient(180deg,var(--ink2) 0%,var(--ink) 100%);
+  border-bottom:1px solid var(--wire);
+}
+.prof-av{
+  width:70px;height:70px;border-radius:50%;margin:0 auto 14px;
+  background:var(--grad-a);font-size:28px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 3px var(--ink),0 0 0 5px rgba(255,107,157,0.35);
+}
+.prof-name{font-size:20px;font-weight:700;font-family:var(--serif);font-style:italic}
+.prof-handle{font-size:12px;color:var(--fog);margin-top:3px}
+.prof-badges{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.badge{
+  padding:5px 12px;border-radius:50px;
+  font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  border:1px solid;
+}
+.badge-a{background:rgba(255,107,157,0.12);border-color:rgba(255,107,157,0.3);color:var(--rose)}
+.badge-b{background:rgba(110,198,255,0.12);border-color:rgba(110,198,255,0.3);color:var(--sky)}
+.prof-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--wire);border-top:1px solid var(--wire);
+}
+.ps{background:var(--ink);padding:16px 10px;text-align:center}
+.ps-n{
+  font-size:24px;font-weight:800;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+.ps-l{font-size:9.5px;color:var(--fog);margin-top:2px;font-weight:600;letter-spacing:0.3px}
+.prof-menu{padding:14px 16px 30px;display:flex;flex-direction:column;gap:8px}
+.pm{
+  background:var(--ink2);border:1px solid var(--wire);
+  border-radius:var(--r);padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all .2s var(--ease);
+}
+.pm:hover{border-color:var(--rose);transform:translateX(3px)}
+.pm-ic{font-size:20px}
+.pm-tx{flex:1}
+.pm-h{font-size:14px;font-weight:700}
+.pm-s{font-size:11px;color:var(--fog);margin-top:2px}
+.pm-arr{color:var(--fog);font-size:16px}
+/* toggle */
+.tog{
+  width:46px;height:26px;border-radius:50px;
+  background:var(--ink4);position:relative;
+  transition:background .3s;flex-shrink:0;
+  border:1px solid var(--wire2);
+}
+.tog.on{background:var(--rose)}
+.tog-k{
+  position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;
+  background:#fff;transition:transform .3s var(--spring);
+  box-shadow:0 2px 6px rgba(0,0,0,0.4);
+}
+.tog.on .tog-k{transform:translateX(20px)}
+
+/* ╔══════════════════════════════════════════╗
+   ║  BOTTOM NAV BAR                          ║
+   ╚══════════════════════════════════════════╝ */
+#botnav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:var(--bot-h);z-index:500;
+  background:rgba(8,8,16,0.96);backdrop-filter:blur(28px);
+  border-top:1px solid var(--wire);
+  display:flex;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.tab{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:3px;cursor:pointer;padding:7px 4px;
+  position:relative;transition:all .2s;
+}
+.tab-ic{
+  font-size:20px;filter:grayscale(1) opacity(0.35);
+  transition:all .3s var(--spring);
+}
+.tab.on .tab-ic{filter:none;transform:scale(1.2)}
+.tab-lb{font-size:9px;font-weight:700;color:var(--fog);letter-spacing:0.2px}
+.tab.on .tab-lb{
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+.tab-pip{
+  position:absolute;top:5px;right:calc(50% - 18px);
+  width:7px;height:7px;border-radius:50%;
+  background:var(--rose);display:none;
+}
+.tab-pip.show{display:block}
+
+/* ╔══════════════════════════════════════════╗
+   ║  TOAST                                   ║
+   ╚══════════════════════════════════════════╝ */
+#toast{
+  position:fixed;bottom:calc(var(--bot-h) + 14px);left:50%;
+  transform:translateX(-50%) translateY(14px);
+  background:var(--ink4);border:1px solid var(--wire2);
+  color:var(--snow);padding:11px 22px;border-radius:50px;
+  font-size:12px;font-weight:600;opacity:0;
+  transition:all .28s var(--ease);pointer-events:none;
+  z-index:999;white-space:nowrap;max-width:88vw;
+  text-align:center;overflow:hidden;text-overflow:ellipsis;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ╔══════════════════════════════════════════╗
+   ║  NOTIFICATION BANNER + POPUP             ║
+   ╚══════════════════════════════════════════╝ */
+#notif-banner{
+  margin:12px 16px 0;border-radius:var(--r);
+  background:var(--ink2);border:1px solid rgba(255,107,157,0.25);
+  padding:14px 16px;display:flex;align-items:flex-start;gap:12px;
+  animation:slideDown .4s var(--spring) both;
+}
+#notif-banner.gone{display:none}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+.nb-ic{font-size:22px;flex-shrink:0}
+.nb-ttl{font-size:13px;font-weight:700;margin-bottom:2px}
+.nb-sub{font-size:11px;color:var(--fog);line-height:1.45}
+.nb-acts{display:flex;gap:8px;margin-top:10px}
+.nb-yes{
+  padding:7px 16px;border-radius:50px;
+  background:var(--grad-a);color:#fff;
+  font-family:var(--sans);font-size:11px;font-weight:700;
+}
+.nb-no{
+  padding:7px 16px;border-radius:50px;
+  background:var(--ink3);border:1px solid var(--wire2);
+  color:var(--snow2);font-family:var(--sans);font-size:11px;font-weight:600;
+}
+#notif-popup{
+  position:fixed;inset:0;z-index:900;
+  display:flex;align-items:flex-end;
+  background:rgba(0,0,0,0);
+  pointer-events:none;
+  transition:background .35s;
+}
+#notif-popup.show{background:rgba(0,0,0,0.7);pointer-events:all}
+.np-card{
+  width:100%;background:var(--ink2);border-radius:var(--r2) var(--r2) 0 0;
+  padding:28px 22px 36px;text-align:center;
+  border:1px solid var(--wire2);
+  transform:translateY(100%);
+  transition:transform .4s var(--snap);
+  max-width:500px;margin:0 auto;
+}
+#notif-popup.show .np-card{transform:translateY(0)}
+.np-icon{font-size:42px;margin-bottom:14px}
+.np-title{font-family:var(--serif);font-style:italic;font-size:22px;font-weight:700;margin-bottom:8px}
+.np-sub{font-size:13px;color:var(--fog);line-height:1.55;margin-bottom:22px}
+.np-yes{
+  display:block;width:100%;padding:14px;border-radius:50px;
+  background:var(--grad-a);color:#fff;
+  font-family:var(--sans);font-size:14px;font-weight:700;
+  margin-bottom:10px;
+  box-shadow:0 8px 28px rgba(255,107,157,0.4);
+}
+.np-no{
+  display:block;width:100%;padding:12px;border-radius:50px;
+  background:var(--ink3);border:1px solid var(--wire2);
+  color:var(--snow2);font-family:var(--sans);font-size:13px;font-weight:600;
+}
+.np-later{font-size:11px;color:var(--fog);margin-top:12px;cursor:pointer}
+
+/* ╔══════════════════════════════════════════╗
+   ║  ARTICLE READER                          ║
+   ╚══════════════════════════════════════════╝ */
+#reader{
+  position:fixed;inset:0;z-index:700;
+  background:var(--ink);overflow-y:auto;
+  transform:translateX(100%);transition:transform .36s var(--snap);
+}
+#reader.open{transform:translateX(0)}
+.rd-top{
+  position:sticky;top:0;z-index:2;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;
+  background:rgba(8,8,16,0.94);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--wire);
+}
+.rd-back{
+  background:var(--ink3);border:1px solid var(--wire2);
+  border-radius:50px;padding:7px 16px;
+  font-family:var(--sans);font-size:12px;font-weight:700;color:var(--snow);
+}
+.rd-top-title{font-size:13px;font-weight:700;flex:1;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rd-hero{height:220px;background-size:cover;background-position:center}
+.rd-body{padding:24px 18px 48px;max-width:640px;margin:0 auto}
+.rd-tag{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px;
+}
+.rd-title{font-family:var(--serif);font-size:clamp(22px,5.5vw,34px);font-weight:700;line-height:1.25;margin-bottom:16px}
+.rd-body-text{font-size:15px;line-height:1.75;color:var(--snow2)}
+.rd-body-text h3{font-size:17px;font-weight:700;color:var(--snow);margin:22px 0 8px;font-family:var(--serif)}
+.rd-body-text p{margin-bottom:14px}
+
+/* ╔══════════════════════════════════════════╗
+   ║  ALL ARTICLES MODAL                      ║
+   ╚══════════════════════════════════════════╝ */
+#allArtsModal{
+  position:fixed;inset:0;z-index:900;
+  background:var(--ink);
+  transform:translateY(100%);
+  transition:transform .38s var(--ease);
+  overflow-y:auto;padding-bottom:80px;
+}
+
+/* ╔══════════════════════════════════════════╗
+   ║  WALLPAPER BANNER CARD                   ║
+   ╚══════════════════════════════════════════╝ */
+.wall-banner{
+  margin:0 16px 28px;
+  border-radius:var(--r2);
+  overflow:hidden;
+  position:relative;
+  height:120px;
+  background-size:cover;
+  background-position:center;
+  cursor:pointer;
+  box-shadow:0 12px 40px rgba(0,0,0,0.5);
+  transition:transform .25s var(--ease),box-shadow .25s;
+  text-decoration:none;
+  display:block;
+}
+.wall-banner:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 18px 50px rgba(0,0,0,0.65)}
+.wall-banner:active{transform:scale(0.97)}
+.wall-banner::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(139,92,246,0.75),rgba(236,72,153,0.60),rgba(249,115,22,0.55));
+}
+.wall-banner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(0,0,0,0.35) 0%,transparent 60%);
+}
+.wall-banner-inner{
+  position:relative;z-index:2;
+  height:100%;display:flex;align-items:center;
+  padding:0 20px;gap:16px;
+}
+.wall-banner-icon{
+  font-size:38px;flex-shrink:0;
+  filter:drop-shadow(0 2px 12px rgba(0,0,0,0.4));
+}
+.wall-banner-text{}
+.wall-banner-title{
+  font-family:var(--serif);font-style:italic;
+  font-size:20px;font-weight:900;color:#fff;
+  line-height:1.15;margin-bottom:4px;
+  text-shadow:0 1px 10px rgba(0,0,0,0.4);
+}
+.wall-banner-sub{
+  font-size:11px;font-weight:600;
+  color:rgba(255,255,255,0.72);
+  letter-spacing:0.3px;
+}
+.wall-banner-arrow{
+  margin-left:auto;flex-shrink:0;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.18);
+  border:1px solid rgba(255,255,255,0.30);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#fff;
+  backdrop-filter:blur(8px);
+  transition:background .2s,transform .2s;
+}
+.wall-banner:hover .wall-banner-arrow{background:rgba(255,255,255,0.30);transform:translateX(3px)}
+
+/* ╔══════════════════════════════════════════╗
+   ║  ARTICLES                                ║
+   ╚══════════════════════════════════════════╝ */
+.art-list{display:flex;flex-direction:column;gap:10px}
+.art-card{
+  background:var(--ink2);border:1px solid var(--wire);
+  border-radius:var(--r);overflow:hidden;
+  display:flex;cursor:pointer;
+  transition:all .22s var(--ease);
+}
+.art-card:hover{border-color:var(--rose);transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,107,157,0.15)}
+.art-thumb{width:90px;height:82px;flex-shrink:0;background-size:cover;background-position:center}
+.art-body{padding:11px 13px;flex:1;min-width:0}
+.art-tag{
+  font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.5px;
+  background:var(--grad-a);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;
+}
+.art-title{
+  font-size:13px;font-weight:700;line-height:1.25;margin-bottom:4px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.art-preview{
+  font-size:11px;color:var(--snow2);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* ── Share bar extras ── */
+.fs-btn.wag{
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#fff;border:none;
+  flex:1.5;
+}
+.fs-btn.wag:active{transform:scale(.95);}
+
+/* ── Related Quotes section ── */
+.fs-related{
+  padding:12px 16px 20px;
+  background:rgba(0,0,0,.6);
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.fs-rel-title{
+  font-size:11px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(255,255,255,.5);
+  margin-bottom:10px;
+}
+.fs-rel-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.fs-rel-card{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:10px;cursor:pointer;
+  touch-action:manipulation;transition:background .18s;
+}
+.fs-rel-card:active{background:rgba(255,255,255,.14);}
+.fs-rel-q{
+  font-size:11px;line-height:1.4;color:rgba(255,255,255,.85);
+  margin-bottom:4px;font-style:italic;
+}
+.fs-rel-a{
+  font-size:9px;color:rgba(255,255,255,.4);
+  font-weight:600;letter-spacing:.5px;
+}
+</style>
+
+<!-- Firebase SDK (safe load) -->
+<script>window._fbOk=false;function _fbInit(){try{if(typeof firebase!=='undefined'){firebase.initializeApp({apiKey:"AIzaSyAKMI3LZwlPO-VungZEz3T8_eNwbuSBfhw",authDomain:"daniel-wisdom-hub.firebaseapp.com",projectId:"daniel-wisdom-hub",storageBucket:"daniel-wisdom-hub.firebasestorage.app",messagingSenderId:"911988639155",appId:"1:911988639155:web:e1b781c3054734536c77c6"});window._fbOk=true;}}catch(e){}}</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js" onload="_fbInit()" onerror="console.warn('Firebase unavailable')"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+</head>
+<body>
+
+<!-- ══ TOP NAV ══ -->
+<nav id="topnav">
+  <div class="brand">
+    <div class="brand-gem">✨</div>
+    <span class="brand-name">Daniel Wisdom Hub</span>
+  </div>
+  <div class="nav-right">
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="6"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input id="searchInput" type="search" placeholder="Search quotes…" autocomplete="off"/>
+    </div>
+    <button class="ni ni-dot" id="notifBtn" onclick="handleBellClick()" title="Notifications">🔔</button>
+    <a href="admin.html" class="ni" title="Admin">⚙️</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     VIEW: HOME
+═══════════════════════════════════ -->
+<div class="view on" id="view-home">
+
+  <!-- Notif Banner -->
+  <div id="notif-banner">
+    <div class="nb-ic">🔔</div>
+    <div>
+      <div class="nb-ttl">Get Daily Wisdom</div>
+      <div class="nb-sub">Enable notifications for your morning quote at 8 AM.</div>
+      <div class="nb-acts">
+        <button class="nb-yes" onclick="reqNotif()">Enable ✨</button>
+        <button class="nb-no" onclick="dismissBanner()">Later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Banner -->
+  <div class="hero-band" id="heroBand" onclick="heroClick()">
+    <div class="hero-nav" id="heroDots"></div>
+    <div class="hero-body">
+      <div class="hero-tag" id="heroTag"></div>
+      <div class="hero-q" id="heroQ"></div>
+      <div class="hero-a" id="heroA"></div>
+    </div>
+  </div>
+
+  <!-- Quote of the Day -->
+  <div class="sec">
+    <div class="sec-head"><div class="sec-ttl">⭐ Quote of the Day</div></div>
+    <div id="todayCard"></div>
+  </div>
+
+  <!-- Articles -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-ttl">📖 Articles</div>
+      <button class="sec-more" onclick="openAllArticles()">View all</button>
+    </div>
+    <div class="art-list" id="artList"></div>
+  </div>
+
+  <!-- Category Cards — tap to browse quotes inside -->
+  <div class="sec" style="padding-top:6px;padding-bottom:16px">
+    <div class="sec-head" style="padding-top:14px"><div class="sec-ttl">📚 Categories</div></div>
+    <div class="home-cat-grid" id="homeCatGrid"></div>
+  </div>
+
+  <!-- Wallpaper Banner -->
+  <a class="wall-banner" href="wallpaper.html"
+     style="background-image:url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80')">
+    <div class="wall-banner-inner">
+      <div class="wall-banner-icon">🖼️</div>
+      <div class="wall-banner-text">
+        <div class="wall-banner-title">Quote Wallpapers</div>
+        <div class="wall-banner-sub">Download beautiful wallpapers for your phone</div>
+      </div>
+      <div class="wall-banner-arrow">›</div>
+    </div>
+  </a>
+</div>
+
+<!-- ══ CATEGORY QUOTE BROWSER (TikTok scroll) ══ -->
+<div id="catBrowser">
+  <div class="cb-top">
+    <button class="cb-back" onclick="closeCatBrowser()">← Back</button>
+    <div class="cb-info">
+      <div class="cb-title" id="cbTitle"></div>
+      <div class="cb-count" id="cbCount"></div>
+    </div>
+  </div>
+  <div class="cb-swipe-hint" id="cbHint">↕ Swipe to navigate</div>
+  <div class="cb-feed" id="cbFeed"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     VIEW: EXPLORE (TikTok)
+═══════════════════════════════════ -->
+<div class="view" id="view-explore">
+  <div class="viral-wrap" id="viralWrap"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     VIEW: TRENDING
+═══════════════════════════════════ -->
+<div class="view" id="view-trend">
+  <div style="padding:22px 16px 8px">
+    <div style="font-family:var(--serif);font-style:italic;font-size:28px;font-weight:700;">
+      🔥 <span style="background:var(--grad-a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Trending</span>
+    </div>
+    <div style="font-size:12px;color:var(--fog);margin-top:4px;">Viral quotes · Most saved · Most shared</div>
+  </div>
+  <div class="trend-list" id="trendList"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     VIEW: SAVED
+═══════════════════════════════════ -->
+<div class="view" id="view-saved">
+  <div class="saved-header">Your <span>Saved</span> Quotes</div>
+  <div class="sec">
+    <div class="qg" id="savedGrid"></div>
+    <div id="savedEmpty"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     VIEW: PROFILE
+═══════════════════════════════════ -->
+<div class="view" id="view-profile">
+  <div class="prof-hero">
+    <div class="prof-av">👤</div>
+    <div class="prof-name">Wisdom Explorer</div>
+    <div class="prof-handle">@daniel.wisdomhub</div>
+    <div class="prof-badges">
+      <span class="badge badge-a">✨ Curator</span>
+      <span class="badge badge-b">📖 Reader</span>
+    </div>
+  </div>
+  <div class="prof-stats" id="profStats"></div>
+  <div class="prof-menu" id="profMenu"></div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav id="botnav">
+  <div class="tab on" id="tab-home"    onclick="goView('home')">
+    <div class="tab-ic">🏠</div><div class="tab-lb">Home</div>
+  </div>
+  <div class="tab" id="tab-explore"    onclick="goView('explore')">
+    <div class="tab-ic">🎬</div><div class="tab-lb">Explore</div>
+  </div>
+  <div class="tab" id="tab-trend"      onclick="goView('trend')">
+    <div class="tab-ic">🔥</div><div class="tab-lb">Trending</div>
+  </div>
+  <div class="tab" id="tab-saved"      onclick="goView('saved')">
+    <div class="tab-ic">🔖</div><div class="tab-lb">Saved</div>
+    <div class="tab-pip" id="savedPip"></div>
+  </div>
+  <div class="tab" id="tab-profile"    onclick="goView('profile')">
+    <div class="tab-ic">👤</div><div class="tab-lb">Profile</div>
+  </div>
+</nav>
+
+<!-- ══ FULLSCREEN QUOTE VIEWER ══ -->
+<div id="fsm">
+  <div class="fs-top">
+    <div class="fs-counter" id="fsCtr">1 / 1</div>
+    <button class="fs-close" onclick="closeFS()">✕</button>
+  </div>
+  <div class="fs-track-wrap">
+    <div class="fs-track" id="fsTrk"></div>
+  </div>
+  <button class="fs-arr l" id="fsAL" onclick="fsPrev()">‹</button>
+  <button class="fs-arr r" id="fsAR" onclick="fsNext()">›</button>
+  <div class="fs-hint" id="fsHint">‹ swipe to navigate ›</div>
+  <div class="fs-bar" id="fsBar"></div>
+  <div class="fs-related" id="fsRelated" style="display:none"></div>
+</div>
+
+<!-- ══ ARTICLE READER ══ -->
+<div id="reader">
+  <div class="rd-top">
+    <button class="rd-back" onclick="closeReader()">← Back</button>
+    <span class="rd-top-title" id="rdTopTitle"></span>
+  </div>
+  <div class="rd-hero" id="rdHero"></div>
+  <div class="rd-body">
+    <div class="rd-tag" id="rdTag"></div>
+    <h1 class="rd-title" id="rdTitle"></h1>
+    <div class="rd-body-text" id="rdContent"></div>
+  </div>
+</div>
+
+<!-- ══ ALL ARTICLES MODAL ══ -->
+<div id="allArtsModal">
+  <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(8,8,16,0.96);backdrop-filter:blur(24px);border-bottom:1px solid var(--wire);position:sticky;top:0;z-index:10;">
+    <button onclick="closeAllArticles()" style="background:var(--ink3);border:1px solid var(--wire2);border-radius:50px;padding:7px 16px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--snow);cursor:pointer;">← Back</button>
+    <div>
+      <div style="font-weight:700;font-size:14px;">📖 All Articles</div>
+      <div style="font-size:10px;color:var(--fog)" id="artModalCount"></div>
+    </div>
+  </div>
+  <div style="max-width:480px;margin:0 auto;padding:16px 14px;" id="allArtsList"></div>
+</div>
+
+<!-- ══ NOTIFICATION POPUP ══ -->
+<div id="notif-popup">
+  <div class="np-card">
+    <div class="np-icon">🔔</div>
+    <div class="np-title">Stay Inspired Daily</div>
+    <div class="np-sub">Get a free wisdom quote delivered every morning at 8 AM. No spam — just pure daily motivation.</div>
+    <button class="np-yes" onclick="popupEnable()">✨ Enable Daily Wisdom</button>
+    <button class="np-no" onclick="popupDismiss('later')">Maybe Later</button>
+    <div class="np-later" onclick="popupDismiss('never')">Don't show again</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   IMAGE POOLS
+══════════════════════════════════════════════ */
+const POOL = {
+  motivation:[
+    'photo-1506905925346-21bda4d32df4','photo-1454165804606-c3d57bc86b40',
+    'photo-1519834785169-98be25ec3f84','photo-1493246507139-91e8fad9978e',
+    'photo-1549880338-65ddcdfd017b','photo-1499728603263-13726abce5fd',
+    'photo-1541534741688-6078c6bfb5c5','photo-1476041800959-2f6bb412c8ce',
+    'photo-1529156069898-49953e39b3ac','photo-1501854140801-50d01698950b',
+    'photo-1518199266791-5375a83190b7','photo-1416339684178-3a239570f315',
+    'photo-1495366691023-cc4eadcc2d7e','photo-1498050108023-c5249f4df085',
+    'photo-1552664730-d307ca884978',
+  ],
+  love:[
+    'photo-1518519428374-aaa26fae20b4','photo-1529333166437-7750a6dd5a70',
+    'photo-1474552226712-ac0f0961a954','photo-1497366754035-f200968a6e72',
+    'photo-1518199266791-5375a83190b7','photo-1474614428694-9c15ab56f8ef',
+    'photo-1511988617509-a57c8a288659','photo-1483985988355-763728e1935b',
+    'photo-1470252649378-9c29740c9fa8','photo-1445294211564-3ca59d999abd',
+    'photo-1463413931673-23c20f9db090','photo-1542206395-9feb3edaa68d',
+    'photo-1523438885200-e635ba2c371e','photo-1469571486292-0ba58a3f068b',
+    'photo-1529467765028-6da2d6d6be97',
+  ],
+  savage:[
+    'photo-1508739773434-c26b3d09e071','photo-1470770841072-f978cf4d019e',
+    'photo-1464822759023-fed622ff2c3b','photo-1419242902214-272b3f66ee7a',
+    'photo-1500534314209-a25ddb2bd429','photo-1505505020852-5a1fea4cce25',
+    'photo-1489824904134-891ab64532f1','photo-1544197150-b99a580bb7a8',
+    'photo-1476900543704-4312b429d4ac','photo-1511300636408-a63a89df3482',
+    'photo-1507842217343-583bb7270b66','photo-1516979187457-637abb4f9353',
+    'photo-1524995997946-a1c2e315a42f','photo-1421882046699-09a5f9e88d82',
+    'photo-1519791883288-dc8bd696e667',
+  ],
+  success:[
+    'photo-1454165804606-c3d57bc86b40','photo-1497366216548-37526070297c',
+    'photo-1521737604893-d14cc237f11d','photo-1498050108023-c5249f4df085',
+    'photo-1552664730-d307ca884978','photo-1553484771-898ed465e931',
+    'photo-1600880292203-757bb62b4baf','photo-1517245386807-bb43f82c33c4',
+    'photo-1522202176988-66273c2fd55f','photo-1531545514256-b1400bc00f31',
+    'photo-1556761175-b413da4baf72','photo-1507679799987-c73779587ccf',
+    'photo-1551434678-e076c223a692','photo-1504384308090-c894fdcc538d',
+    'photo-1519834785169-98be25ec3f84',
+  ],
+  deep:[
+    'photo-1456513080510-7bf3a84b82f8','photo-1481627834876-b7833e8f5570',
+    'photo-1457369804613-52c61a468e7d','photo-1535905557558-afc4877a26fc',
+    'photo-1497633762265-9d179a990aa6','photo-1544716278-ca5e3f4abd8c',
+    'photo-1513542789411-b6a5d4f31634','photo-1466629437334-b4f6603563c5',
+    'photo-1455885661740-29cbf08a42fa','photo-1421882046699-09a5f9e88d82',
+    'photo-1505118380757-91f5f5632de0','photo-1500382017468-9049fed747ef',
+    'photo-1508193638397-1c4234db14d8','photo-1418065460487-3e41a6c84dc5',
+    'photo-1519167758481-83f550bb49b3',
+  ],
+  captions:[
+    'photo-1529156069898-49953e39b3ac','photo-1504701954957-2010ec3bcec1',
+    'photo-1476041800959-2f6bb412c8ce','photo-1445294211564-3ca59d999abd',
+    'photo-1518173946687-a4c8892bbd9f','photo-1432958576632-8a39f6b97dc7',
+    'photo-1414609245224-aea2271f1947','photo-1426604966848-d7adac402bff',
+    'photo-1501854140801-50d01698950b','photo-1493246507139-91e8fad9978e',
+    'photo-1441974231531-c6227db76b6e','photo-1459478309853-2c33a60058e7',
+    'photo-1494783367193-149034c05e8f','photo-1439853949212-36589f9f4d1a',
+    'photo-1431440869543-efaf3388c585',
+  ]
+};
+
+const CAT_META = {
+  motivation:{ label:'Motivation', icon:'🚀', grad:'var(--grad-a)' },
+  love:       { label:'Love',       icon:'💖', grad:'linear-gradient(135deg,#ff6b9d,#ff4858)' },
+  savage:     { label:'Savage',     icon:'🔥', grad:'linear-gradient(135deg,#f97316,#ef4444)' },
+  success:    { label:'Success',    icon:'💰', grad:'linear-gradient(135deg,#ffb347,#ff6b9d)' },
+  deep:       { label:'Deep',       icon:'🌌', grad:'linear-gradient(135deg,#6ec6ff,#c084fc)' },
+  captions:   { label:'Captions',   icon:'📸', grad:'linear-gradient(135deg,#90f08c,#6ec6ff)' },
+};
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-.5) }
+const cursors={};
+const shuffled={};
+Object.keys(POOL).forEach(k=>{ cursors[k]=0; shuffled[k]=shuffle(POOL[k]); });
+function nextImg(cat,n=4){
+  const pool=shuffled[cat]||shuffled.motivation;
+  const imgs=[];
+  for(let i=0;i<n;i++){
+    imgs.push('https://images.unsplash.com/'+pool[(cursors[cat]+++i)%pool.length]+'?w=900&q=80');
+  }
+  return imgs;
+}
+function ensureBg(q){
+  const k=(q.cat||'motivation').toLowerCase().replace(/\s+/g,'').replace('deep thoughts','deep').replace('instagram captions','captions');
+  const validCat=Object.keys(POOL).includes(k)?k:'motivation';
+  if(!q.bgOptions||q.bgOptions.length<2) q.bgOptions=nextImg(validCat,4);
+  if(!q.img||q.img==='undefined') q.img=q.bgOptions[0];
+}
+
+/* ══════════════════════════════════════════════
+   DEFAULT QUOTES
+══════════════════════════════════════════════ */
+const DQ = [
+  {id:1, q:'The secret of getting ahead is getting started.',               a:'Mark Twain',           cat:'success'},
+  {id:2, q:'It does not matter how slowly you go as long as you do not stop.', a:'Confucius',          cat:'deep'},
+  {id:3, q:'Life is what happens when you\'re busy making other plans.',    a:'John Lennon',           cat:'love'},
+  {id:4, q:'A smooth sea never made a skilled sailor.',                     a:'African Proverb',       cat:'motivation'},
+  {id:5, q:'Don\'t judge each day by the harvest you reap but by the seeds that you plant.', a:'Robert Louis Stevenson', cat:'deep'},
+  {id:6, q:'Spread love everywhere you go. Let no one come to you without leaving happier.', a:'Mother Teresa', cat:'love'},
+  {id:7, q:'When you have a dream, you\'ve got to grab it and never let go.', a:'Carol Burnett',       cat:'motivation'},
+  {id:8, q:'Be yourself; everyone else is already taken.',                  a:'Oscar Wilde',           cat:'savage'},
+  {id:9, q:'Strive not to be a success, but rather to be of value.',       a:'Albert Einstein',       cat:'success'},
+  {id:10,q:'Two roads diverged in a wood, and I took the one less traveled by.', a:'Robert Frost',    cat:'deep'},
+  {id:11,q:'The best revenge is massive success.',                          a:'Frank Sinatra',         cat:'savage'},
+  {id:12,q:'In the middle of every difficulty lies opportunity.',           a:'Albert Einstein',       cat:'success'},
+  {id:13,q:'The best time to plant a tree was 20 years ago. The second best time is now.', a:'Chinese Proverb', cat:'motivation'},
+  {id:14,q:'You only live once, but if you do it right, once is enough.',  a:'Mae West',              cat:'captions'},
+  {id:15,q:'Collect moments, not things.',                                  a:'Unknown',               cat:'captions'},
+  {id:16,q:'In three words I can sum up everything I\'ve learned about life: it goes on.', a:'Robert Frost', cat:'deep'},
+  {id:17,q:'Success usually comes to those who are too busy to be looking for it.', a:'Henry David Thoreau', cat:'success'},
+  {id:18,q:'The mind is everything. What you think you become.',            a:'Buddha',                cat:'deep'},
+  {id:19,q:'She remembered who she was and the game changed.',              a:'Lalah Delia',           cat:'savage'},
+  {id:20,q:'Do what you can, with what you have, where you are.',          a:'Theodore Roosevelt',    cat:'motivation'},
+  {id:21,q:'Darkness cannot drive out darkness; only light can do that.',  a:'Martin Luther King Jr.',cat:'deep'},
+  {id:22,q:'If you want to go fast, go alone. If you want to go far, go together.', a:'African Proverb', cat:'motivation'},
+  {id:23,q:'The journey of a thousand miles begins with one step.',         a:'Lao Tzu',              cat:'motivation'},
+  {id:24,q:'She was chaos and beauty intertwined.',                         a:'Unknown',               cat:'captions'},
+  {id:25,q:'Love yourself first and everything else falls into line.',      a:'Lucille Ball',          cat:'love'},
+  {id:26,q:'Make them stop and stare.',                                     a:'Unknown',               cat:'captions'},
+  {id:27,q:'Stay focused and never give up.',                               a:'Unknown',               cat:'motivation'},
+  {id:28,q:'Be so good they can\'t ignore you.',                           a:'Steve Martin',          cat:'savage'},
+];
+
+const DA = [
+  {id:1,cat:'deep',
+   title:'10 Ancient Wisdom Principles That Still Work Today',
+   preview:'From Stoic philosophy to Confucian thought, these timeless principles guide modern life.',
+   img:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80',
+   content:`<h3>Introduction</h3><p>Ancient wisdom has survived millennia because it speaks to the unchanging core of human experience. The sages of antiquity walked the paths we now walk — and left maps.</p><h3>1. Memento Mori</h3><p>The Stoics reminded themselves daily of mortality — not morbidly, but as a catalyst for intentional living. When you know time is finite, trivial distractions lose their grip.</p><h3>2. The Middle Path</h3><p>Buddha taught balance above all. Extremism in any form leads to suffering. The flourishing life lives in equilibrium.</p><h3>3. Know Thyself</h3><p>Inscribed at Delphi, this command launched a tradition of self-inquiry that remains the foundation of all psychological and spiritual growth.</p><h3>Conclusion</h3><p>Ancient wisdom endures not because it is old, but because it is true. Begin with one principle today.</p>`
+  },
+  {id:2,cat:'success',
+   title:'The Science of Daily Habits That Build Extraordinary Lives',
+   preview:'Neuroscience reveals how tiny daily rituals compound into remarkable transformation.',
+   img:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+   content:`<h3>Why Habits Matter</h3><p>Your habits are the compound interest of self-improvement. Tiny daily actions, repeated consistently, produce results that appear miraculous to outsiders.</p><h3>The 1% Rule</h3><p>Getting 1% better each day means being 37× better by year's end. The math is real. So is the discipline required.</p><h3>Keystone Habits</h3><p>Some habits unlock a cascade of other positive behaviors. Exercise, journaling, and sleep are proven keystones. Start there.</p><h3>Conclusion</h3><p>Build the habit first. The results will follow. Every master was once a beginner with a simple daily practice.</p>`
+  },
+  {id:3,cat:'love',
+   title:'How Love Transforms the Human Experience',
+   preview:'The deepest insights about love from philosophers, poets, and modern psychology.',
+   img:'https://images.unsplash.com/photo-1518519428374-aaa26fae20b4?w=800&q=80',
+   content:`<h3>Love as a Practice</h3><p>Love is not merely a feeling — it is a verb, a discipline, a daily choice renewed in small acts of attention and care.</p><h3>The Ancient Greeks Had It Right</h3><p>They distinguished Eros (passion), Philia (friendship), Storge (family), and Agape (universal love). Most relationships need all four.</p><h3>Conclusion</h3><p>Love boldly. The risk of loving is always worth taking.</p>`
+  },
+];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let Q=[], A=[], savedIds=new Set(), bgMap={};
+let curView='home', curCat='all', feedQ=[], feedPage=0;
+const PAGE=8;
+let fsQ=[], fsIdx=0;
+let viralIdx=0, viralTimer, viralProg, viralPaused=false;
+let heroIdx=0, heroTimer, heroQuotes=[];
+
+/* ══════════════════════════════════════════════
+   PERSISTENCE
+══════════════════════════════════════════════ */
+function loadData(){
+  try{ const r=localStorage.getItem('dwh_q'); if(r){ const p=JSON.parse(r); if(Array.isArray(p)&&p.length) DQ.splice(0,DQ.length,...p); } }catch(e){}
+  try{ const r=localStorage.getItem('dwh_a'); if(r){ const p=JSON.parse(r); if(Array.isArray(p)&&p.length) DA.splice(0,DA.length,...p); } }catch(e){}
+  try{ const r=localStorage.getItem('dwh_sv'); if(r) savedIds=new Set(JSON.parse(r)); }catch(e){}
+  try{ const r=localStorage.getItem('dwh_bg'); if(r) bgMap=JSON.parse(r)||{}; }catch(e){}
+  Q=[...DQ]; A=[...DA];
+  Q.forEach(q=>ensureBg(q));
+  if(savedIds.size>0) document.getElementById('savedPip')?.classList.add('show');
+}
+function persist(){
+  try{
+    localStorage.setItem('dwh_sv',JSON.stringify([...savedIds]));
+    localStorage.setItem('dwh_bg',JSON.stringify(bgMap));
+  }catch(e){}
+}
+
+/* ══════════════════════════════════════════════
+   VIEW ROUTING
+══════════════════════════════════════════════ */
+function goView(v){
+  if(curView===v) return;
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('on'));
+  const viewEl=document.getElementById('view-'+v);
+  if(viewEl) viewEl.classList.add('on');
+  const tabEl=document.getElementById('tab-'+v);
+  if(tabEl) tabEl.classList.add('on');
+  curView=v;
+  if(v==='explore') initViral();
+  if(v==='saved') renderSaved();
+  if(v==='profile') renderProfile();
+  if(v==='trend') renderTrend();
+  window.scrollTo(0,0);
+}
+
+/* ══════════════════════════════════════════════
+   HOME CATEGORY GRID
+══════════════════════════════════════════════ */
+function buildHomeCatGrid(){
+  const grid=document.getElementById('homeCatGrid');
+  const cats=Object.entries(CAT_META);
+  grid.innerHTML=cats.map(([key,meta],i)=>{
+    const catQ=Q.filter(q=>(q.cat||'').toLowerCase()===key||(q.cat||'').toLowerCase().includes(key));
+    const cnt=catQ.length;
+    const imgs=shuffled[key]||shuffled.motivation;
+    const bg='https://images.unsplash.com/'+imgs[0]+'?w=700&q=80';
+    const preview=catQ[0]?`"${catQ[0].q.slice(0,55)}…"`:'';
+    return `<div class="hc-card" style="background-image:url('${bg}');animation-delay:${i*0.07}s" onclick="openCatBrowser('${key}')">
+      <div class="hc-grad-bar" style="background:${meta.grad}"></div>
+      <div class="hc-body">
+        <div class="hc-icon">${meta.icon}</div>
+        <div class="hc-name">${meta.label}</div>
+        <div class="hc-cnt">${cnt} quote${cnt!==1?'s':''}</div>
+        ${preview?`<div class="hc-preview">${preview}</div>`:''}
+        <div class="hc-tap">Browse quotes ›</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   CATEGORY BROWSER
+══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   CATEGORY TIKTOK FEED
+══════════════════════════════════════════════ */
+let cbQ=[], cbActiveIdx=0, cbProgTimer, cbProgEl;
+
+function openCatBrowser(key){
+  const meta=CAT_META[key]||{label:key,icon:'✨',grad:'var(--grad-a)'};
+  cbQ=Q.filter(q=>(q.cat||'').toLowerCase()===key||(q.cat||'').toLowerCase().includes(key));
+
+  document.getElementById('cbTitle').innerHTML=`${meta.icon} ${meta.label}`;
+  document.getElementById('cbCount').textContent=`${cbQ.length} quote${cbQ.length!==1?'s':''}`;
+
+  // Build all slides
+  const feed=document.getElementById('cbFeed');
+  feed.innerHTML='';
+  cbActiveIdx=0;
+
+  if(!cbQ.length){
+    feed.innerHTML=`<div class="cb-empty">
+      <div class="cb-empty-i">💬</div>
+      <div class="cb-empty-t">No quotes yet</div>
+      <div class="cb-empty-s">Add some from the Admin panel</div>
+    </div>`;
+  } else {
+    cbQ.forEach((q,i)=>{
+      const bi=bgMap[q.id]||0;
+      const bg=q.bgOptions?.[bi]||q.img;
+      const sv=savedIds.has(q.id);
+      const cmeta=CAT_META[(q.cat||'').toLowerCase()]||meta;
+
+      const slide=document.createElement('div');
+      slide.className='cb-slide';
+      slide.id='cbs'+q.id;
+      slide.style.backgroundImage=`url('${bg}')`;
+      slide.innerHTML=`
+        <div class="cb-prog"><div class="cb-bar" id="cbbar${i}"></div></div>
+        <div class="cb-side">
+          <button class="cb-sib${sv?' saved':''}" id="cbsv${q.id}" onclick="cbToggleSave(${q.id},${i})">
+            <div class="cb-sic">${sv?'❤️':'🤍'}</div>
+            <div class="cb-sil">${sv?'Saved':'Save'}</div>
+          </button>
+          <button class="cb-sib" onclick="dlQuote(${q.id})">
+            <div class="cb-sic">📲</div>
+            <div class="cb-sil">Download</div>
+          </button>
+          <button class="cb-sib" onclick="cbCycBg(${q.id},${i})">
+            <div class="cb-sic">🌄</div>
+            <div class="cb-sil">Theme</div>
+          </button>
+        </div>
+        <div class="cb-body">
+          <div class="cb-cat-tag">${cmeta.icon} ${cmeta.label}</div>
+          <div class="cb-q">"${q.q}"</div>
+          <div class="cb-a">— ${q.a}</div>
+          <div class="cb-btns">
+            <button class="cb-btn wh" onclick="event.stopPropagation();dlQuote(${q.id})">📲 Download</button>
+            <button class="cb-btn tr" onclick="event.stopPropagation();cbCopyQuote(${q.id})">📋 Copy</button>
+          </div>
+        </div>`;
+      feed.appendChild(slide);
+    });
+  }
+
+  // Open panel
+  document.getElementById('catBrowser').classList.add('open');
+  document.body.style.overflow='hidden';
+  feed.scrollTop=0;
+
+  // Swipe hint fades after 2.5s
+  const hint=document.getElementById('cbHint');
+  hint.style.opacity='1';
+  setTimeout(()=>hint.style.opacity='0',2500);
+
+  // Start progress on first slide
+  cbStartProg(0);
+
+  // Snap scroll → update active slide
+  feed.onscroll=()=>{
+    const newIdx=Math.round(feed.scrollTop/window.innerHeight);
+    if(newIdx!==cbActiveIdx){ cbActiveIdx=newIdx; cbStartProg(newIdx); }
+  };
+}
+
+function cbStartProg(idx){
+  clearInterval(cbProgTimer);
+  // Reset all bars
+  document.querySelectorAll('.cb-bar').forEach(b=>b.style.width='0%');
+  if(!cbQ.length) return;
+  const bar=document.getElementById('cbbar'+idx);
+  if(!bar) return;
+  let pct=0;
+  cbProgTimer=setInterval(()=>{
+    pct+=1;
+    bar.style.width=pct+'%';
+    if(pct>=100){
+      clearInterval(cbProgTimer);
+      // Auto-advance to next
+      const feed=document.getElementById('cbFeed');
+      const next=Math.min(idx+1,cbQ.length-1);
+      if(next!==idx) feed.scrollTo({top:next*window.innerHeight,behavior:'smooth'});
+    }
+  },50); // 5 seconds total (100 × 50ms)
+}
+
+function cbCycBg(id,slideIdx){
+  const q=Q.find(x=>x.id===id);
+  if(!q||!q.bgOptions||q.bgOptions.length<2){ showToast('No more backgrounds'); return; }
+  bgMap[id]=((bgMap[id]||0)+1)%q.bgOptions.length; persist();
+  const slide=document.getElementById('cbs'+id);
+  if(slide) slide.style.backgroundImage=`url('${q.bgOptions[bgMap[id]]}')`;
+  showToast('🎨 Background changed');
+}
+
+function cbToggleSave(id,slideIdx){
+  const had=savedIds.has(id);
+  if(had){ savedIds.delete(id); showToast('Removed'); }
+  else { savedIds.add(id); showToast('🔖 Saved!'); document.getElementById('savedPip')?.classList.add('show'); }
+  persist();
+  // Update button in feed
+  const btn=document.getElementById('cbsv'+id);
+  if(btn){
+    btn.classList.toggle('saved',savedIds.has(id));
+    btn.querySelector('.cb-sic').textContent=savedIds.has(id)?'❤️':'🤍';
+    btn.querySelector('.cb-sil').textContent=savedIds.has(id)?'Saved':'Save';
+  }
+  // Also sync main save buttons if visible
+  document.querySelectorAll('#sb'+id).forEach(b=>{
+    b.textContent=savedIds.has(id)?'❤️':'🤍';
+    b.classList.toggle('sv',savedIds.has(id));
+  });
+}
+
+function cbCopyQuote(id){
+  const q=Q.find(x=>x.id===id); if(!q) return;
+  navigator.clipboard?.writeText(`"${q.q}" — ${q.a}`)
+    .then(()=>showToast('📋 Copied!'))
+    .catch(()=>showToast('Copy not supported'));
+}
+
+function closeCatBrowser(){
+  clearInterval(cbProgTimer);
+  document.getElementById('catBrowser').classList.remove('open');
+  document.getElementById('cbFeed').onscroll=null;
+  document.body.style.overflow='';
+}
+
+/* ══════════════════════════════════════════════
+   SEARCH — opens cat browser with results
+══════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════
+   HERO BANNER
+══════════════════════════════════════════════ */
+function buildHero(){
+  heroQuotes=shuffle(Q).slice(0,6);
+  const dots=document.getElementById('heroDots');
+  dots.innerHTML=heroQuotes.map((_,i)=>`<div class="hero-dot${i===0?' on':''}" onclick="goHero(${i})"></div>`).join('');
+  goHero(0,false);
+  clearInterval(heroTimer);
+  heroTimer=setInterval(()=>{ goHero((heroIdx+1)%heroQuotes.length); },4200);
+}
+function goHero(i,animate=true){
+  heroIdx=i;
+  const q=heroQuotes[i];
+  if(!q) return;
+  const band=document.getElementById('heroBand');
+  if(animate){ band.style.opacity='0'; setTimeout(()=>{ _setHero(q,band); band.style.opacity='1'; },180); }
+  else _setHero(q,band);
+  document.querySelectorAll('.hero-dot').forEach((d,di)=>d.classList.toggle('on',di===i));
+}
+function _setHero(q,band){
+  band.style.backgroundImage=`url('${q.bgOptions?.[bgMap[q.id]||0]||q.img}')`;
+  const meta=CAT_META[(q.cat||'motivation').toLowerCase()]||CAT_META.motivation;
+  document.getElementById('heroTag').innerHTML=`${meta.icon} ${meta.label}`;
+  document.getElementById('heroQ').textContent=`"${q.q}"`;
+  document.getElementById('heroA').textContent=`— ${q.a}`;
+}
+function heroClick(){
+  const q=heroQuotes[heroIdx];
+  if(q) openFS([q],0);
+}
+
+/* ══════════════════════════════════════════════
+   TODAY'S QUOTE
+══════════════════════════════════════════════ */
+function buildToday(){
+  const dayN=Math.floor(Date.now()/86400000);
+  const q=Q[dayN%Q.length];
+  if(!q) return;
+  const bg=q.bgOptions?.[0]||q.img;
+  document.getElementById('todayCard').innerHTML=`
+    <div class="today-card" style="background-image:url('${bg}')" onclick="openFS(Q,${Q.indexOf(q)})">
+      <div class="today-inner">
+        <div class="today-tag">⭐ Today's Quote</div>
+        <div class="today-q">"${q.q}"</div>
+        <div class="today-a">— ${q.a}</div>
+        <div class="today-acts">
+          <button class="tb w" onclick="event.stopPropagation();dlQuote(${q.id})">📲 Download</button>
+          <button class="tb g" onclick="event.stopPropagation();toggleSave(${q.id},this)">
+            ${savedIds.has(q.id)?'❤️ Saved':'🤍 Save'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════
+   ARTICLES
+══════════════════════════════════════════════ */
+function renderArts(){
+  const list=document.getElementById('artList');
+  const items=curCat==='all'?A:A.filter(a=>a.cat===curCat||a.cat.includes(curCat));
+  if(!items.length){ list.innerHTML=`<div class="empty"><div class="empty-i">📖</div><div class="empty-t">No articles</div></div>`; return; }
+  list.innerHTML=items.slice(0,3).map(a=>`
+    <div class="art-card" onclick="openArticle(${a.id})">
+      <div class="art-thumb" style="background-image:url('${a.img||'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&q=80'}')"></div>
+      <div class="art-body">
+        <div class="art-tag">${a.cat}</div>
+        <div class="art-title">${a.title}</div>
+        <div class="art-preview">${a.preview}</div>
+      </div>
+    </div>`).join('');
+}
+function openArticle(id){
+  const a=A.find(x=>x.id===id); if(!a) return;
+  document.getElementById('rdHero').style.backgroundImage=`url('${a.img||'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80'}')`;
+  document.getElementById('rdTag').textContent=a.cat.toUpperCase();
+  document.getElementById('rdTitle').textContent=a.title;
+  document.getElementById('rdTopTitle').textContent=a.title;
+  document.getElementById('rdContent').innerHTML=a.content;
+  const rd=document.getElementById('reader');
+  rd.classList.add('open'); rd.scrollTop=0;
+}
+function closeReader(){ document.getElementById('reader').classList.remove('open'); }
+function openAllArticles(){
+  const modal=document.getElementById('allArtsModal');
+  const list=document.getElementById('allArtsList');
+  document.getElementById('artModalCount').textContent=`${A.length} articles`;
+  list.innerHTML=A.length?A.map(a=>`
+    <div class="art-card" onclick="openArticle(${a.id});closeAllArticles();" style="margin-bottom:12px;">
+      <div class="art-thumb" style="background-image:url('${a.img||'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&q=80'}')"></div>
+      <div class="art-body">
+        <div class="art-tag">${a.cat}</div>
+        <div class="art-title">${a.title}</div>
+        <div class="art-preview">${a.preview}</div>
+      </div>
+    </div>`).join(''):`<div class="empty"><div class="empty-i">📖</div><div class="empty-t">No articles yet</div></div>`;
+  modal.style.transform='translateY(0)';
+  document.body.style.overflow='hidden';
+}
+function closeAllArticles(){ document.getElementById('allArtsModal').style.transform='translateY(100%)'; document.body.style.overflow=''; }
+
+/* ══════════════════════════════════════════════
+   CATEGORY HERO GRID (Categories view — kept for goView cats if needed)
+══════════════════════════════════════════════ */
+function renderCatHeroGrid(){} // no-op, home grid replaces this
+
+/* ══════════════════════════════════════════════
+   TRENDING
+══════════════════════════════════════════════ */
+function renderTrend(){
+  const list=document.getElementById('trendList');
+  const top=shuffle(Q).slice(0,15);
+  list.innerHTML=top.map((q,i)=>{
+    const bg=q.bgOptions?.[0]||q.img;
+    const saves=Math.floor(Math.random()*9800+200);
+    const shares=Math.floor(saves*0.6);
+    return `<div class="trend-item" onclick="openFS([...Q],Q.indexOf(q))">
+      <div class="trend-rank">${i+1}</div>
+      <div class="trend-img" style="background-image:url('${bg}')"></div>
+      <div class="trend-body">
+        <div class="trend-q">"${q.q}"</div>
+        <div class="trend-a">— ${q.a}</div>
+        <div class="trend-stats">
+          <span class="trend-stat">❤️ ${(saves/1000).toFixed(1)}k</span>
+          <span class="trend-stat">📤 ${(shares/1000).toFixed(1)}k</span>
+        </div>
+      </div>
+      <div class="trend-arrow">›</div>
+    </div>`;
+  }).join('');
+  // Fix onclick references after innerHTML
+  list.querySelectorAll('.trend-item').forEach((item,i)=>{
+    item.onclick=()=>openFS(top,i);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   SAVE SYSTEM
+══════════════════════════════════════════════ */
+function toggleSave(id,btn){
+  const had=savedIds.has(id);
+  if(had){ savedIds.delete(id); showToast('Removed from saved'); }
+  else { savedIds.add(id); showToast('🔖 Saved!'); document.getElementById('savedPip')?.classList.add('show'); }
+  document.querySelectorAll('#sb'+id).forEach(b=>{
+    b.textContent=savedIds.has(id)?'❤️':'🤍';
+    b.classList.toggle('sv',savedIds.has(id));
+  });
+  const fsb=document.getElementById('fsSave');
+  if(fsb&&parseInt(fsb.dataset.id)===id){
+    fsb.className=savedIds.has(id)?'fs-btn sv':'fs-btn gst';
+    fsb.innerHTML=savedIds.has(id)?'❤️ Saved':'🤍 Save';
+  }
+  persist();
+}
+
+/* TikTok-style like for viral feed */
+function vsSave(id,btn){
+  const had=savedIds.has(id);
+  if(had){
+    savedIds.delete(id);
+    btn.classList.remove('liked');
+    btn.querySelector('.vs-sic').textContent='🤍';
+    btn.querySelector('.vs-sil').textContent='Save';
+    showToast('Removed from saved');
+  } else {
+    savedIds.add(id);
+    btn.classList.add('liked');
+    btn.querySelector('.vs-sic').textContent='❤️';
+    btn.querySelector('.vs-sil').textContent='Saved';
+    showToast('❤️ Saved!');
+    document.getElementById('savedPip')?.classList.add('show');
+  }
+  persist();
+}
+
+/* ══════════════════════════════════════════════
+   BG CYCLE
+══════════════════════════════════════════════ */
+function cycBg(id,fromFS=false){
+  const q=Q.find(q=>q.id===id);
+  if(!q||!q.bgOptions||q.bgOptions.length<2){ showToast('No more backgrounds'); return; }
+  bgMap[id]=((bgMap[id]||0)+1)%q.bgOptions.length; persist();
+  const card=document.getElementById('qc'+id);
+  if(card) card.style.backgroundImage=`url('${q.bgOptions[bgMap[id]]}')`;
+  if(fromFS){ const fss=document.getElementById('fss'+id); if(fss) fss.style.backgroundImage=`url('${q.bgOptions[bgMap[id]]}')` }
+  showToast('🎨 Background changed');
+}
+
+/* ══════════════════════════════════════════════
+   DOWNLOAD (Canvas)
+══════════════════════════════════════════════ */
+function dlQuote(id){
+  const q=Q.find(q=>q.id===id); if(!q) return;
+  const bi=bgMap[id]||0;
+  const src=q.bgOptions?.[bi]||q.img;
+  showToast('📥 Preparing…');
+  const cv=document.createElement('canvas');
+  cv.width=1080; cv.height=1080;
+  const ctx=cv.getContext('2d');
+  function draw(img){
+    if(img) ctx.drawImage(img,0,0,1080,1080);
+    else{ const gd=ctx.createLinearGradient(0,0,1080,1080); gd.addColorStop(0,'#1a0533'); gd.addColorStop(1,'#080810'); ctx.fillStyle=gd; ctx.fillRect(0,0,1080,1080); }
+    const ov=ctx.createLinearGradient(0,160,0,1080);
+    ov.addColorStop(0,'rgba(8,8,16,.06)'); ov.addColorStop(1,'rgba(8,8,16,.92)');
+    ctx.fillStyle=ov; ctx.fillRect(0,0,1080,1080);
+    ctx.fillStyle='#fff'; ctx.textAlign='center';
+    ctx.font='italic 700 44px Georgia,serif';
+    ctx.shadowColor='rgba(0,0,0,.55)'; ctx.shadowBlur=14;
+    const words=('"'+q.q+'"').split(' ');
+    let lines=[],line='';
+    words.forEach(w=>{ const t=line+(line?' ':'')+w; if(ctx.measureText(t).width>900){lines.push(line);line=w;}else line=t; });
+    lines.push(line);
+    const lh=62,startY=540-(lines.length*lh)/2+lh/2;
+    lines.forEach((l,i)=>ctx.fillText(l,540,startY+i*lh));
+    ctx.font='600 26px sans-serif'; ctx.fillStyle='rgba(255,255,255,.58)'; ctx.shadowBlur=6;
+    ctx.fillText('— '+q.a,540,startY+lines.length*lh+38);
+    ctx.font='700 19px sans-serif'; ctx.fillStyle='rgba(255,255,255,.42)';
+    ctx.textAlign='right'; ctx.shadowBlur=4;
+    ctx.fillText('Daniel Wisdom Hub',1056,1052);
+    const link=document.createElement('a');
+    link.download=`wisdomhub-${Date.now()}.jpg`;
+    link.href=cv.toDataURL('image/jpeg',.92); link.click();
+    showToast('✅ Downloaded!');
+  }
+  if(src){ const img=new Image(); img.crossOrigin='anonymous'; img.onload=()=>draw(img); img.onerror=()=>draw(null); img.src=src; }
+  else draw(null);
+}
+
+/* ══════════════════════════════════════════════
+   FULLSCREEN VIEWER
+══════════════════════════════════════════════ */
+
+/* ══════════════════════════
+   SEO: Dynamic URL per quote
+══════════════════════════ */
+function toSlug(text) {
+  return text.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g,'')
+    .trim().replace(/\s+/g,'-')
+    .substring(0,60);
+}
+function setQuoteURL(q) {
+  if (!q) return;
+  const slug = `/${(q.cat||'quotes').toLowerCase()}/${toSlug(q.q)}`;
+  try { history.replaceState({ qid: q.id }, '', slug); } catch(e) {}
+  // Update meta for sharing
+  document.title = `"${q.q.substring(0,60)}..." — Daniel Wisdom Hub`;
+  let og = document.querySelector('meta[property="og:title"]');
+  if (!og) { og = document.createElement('meta'); og.setAttribute('property','og:title'); document.head.appendChild(og); }
+  og.content = `"${q.q.substring(0,60)}..." — Daniel Wisdom Hub`;
+  let ogd = document.querySelector('meta[property="og:description"]');
+  if (!ogd) { ogd = document.createElement('meta'); ogd.setAttribute('property','og:description'); document.head.appendChild(ogd); }
+  ogd.content = `${q.q} — ${q.a}`;
+}
+
+/* ══════════════════════════
+   SHARE: WhatsApp, Copy, Instagram
+══════════════════════════ */
+function shareWhatsApp(q) {
+  const text = `"${q.q}"\n\n— ${q.a}\n\nMore wisdom: ${location.origin}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+function shareCaption(q) {
+  const text = `"${q.q}"\n\n— ${q.a}\n\n#DanielWisdomHub #Wisdom #Motivation`;
+  navigator.clipboard.writeText(text).then(() => showToast('✅ Caption copied!')).catch(() => showToast('Caption copied!'));
+}
+function shareGeneral(q) {
+  const text = `"${q.q}" — ${q.a}`;
+  const url  = `${location.origin}/${(q.cat||'quotes').toLowerCase()}/${toSlug(q.q)}`;
+  if (navigator.share) {
+    navigator.share({ title: 'Daniel Wisdom Hub', text, url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(`${text}\n${url}`).then(() => showToast('✅ Copied!')).catch(() => showToast('Copied!'));
+  }
+}
+function openFS(quotes,idx=0){
+  fsQ=quotes; fsIdx=idx;
+  document.getElementById('fsTrk').innerHTML=fsQ.map(q=>{
+    const bi=bgMap[q.id]||0,bg=q.bgOptions?.[bi]||q.img;
+    const meta=CAT_META[(q.cat||'motivation').toLowerCase()]||CAT_META.motivation;
+    return `<div class="fs-slide" id="fss${q.id}" style="background-image:url('${bg}')">
+      <div class="fs-content">
+        <div class="fs-cat">${meta.icon} ${meta.label}</div>
+        <div class="fs-q">"${q.q}"</div>
+        <div class="fs-a">— ${q.a}</div>
+      </div>
+    </div>`;
+  }).join('');
+  goFS(idx,false);
+  document.getElementById('fsm').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{ const h=document.getElementById('fsHint'); if(h) h.style.opacity='0'; },3000);
+}
+function goFS(i,animate=true){
+  if(!fsQ.length) return;
+  fsIdx=Math.max(0,Math.min(i,fsQ.length-1));
+  const trk=document.getElementById('fsTrk');
+  trk.style.transition=animate?'transform .4s cubic-bezier(0.4,0,0.2,1)':'none';
+  trk.style.transform=`translateX(-${fsIdx*100}vw)`;
+  document.getElementById('fsCtr').textContent=`${fsIdx+1} / ${fsQ.length}`;
+  document.getElementById('fsAL').style.opacity=fsIdx===0?'.25':'1';
+  document.getElementById('fsAR').style.opacity=fsIdx===fsQ.length-1?'.25':'1';
+  const q=fsQ[fsIdx]; const sv=savedIds.has(q.id);
+
+  // Update URL for SEO
+  setQuoteURL(q);
+
+  // Action bar with share buttons
+  document.getElementById('fsBar').innerHTML=`
+    <button class="fs-btn gst" onclick="cycBg(${q.id},true)" title="Change background">🌄</button>
+    <button class="fs-btn gst" onclick="shareCaption(fsQ[fsIdx])" title="Copy caption">📋 Copy</button>
+    <button class="fs-btn wag" onclick="shareWhatsApp(fsQ[fsIdx])" title="Share on WhatsApp">📲 WhatsApp</button>
+    <button class="fs-btn${sv?' sv':' gst'}" id="fsSave" data-id="${q.id}" onclick="toggleSave(${q.id},this)">${sv?'❤️':'🤍'}</button>
+    <button class="fs-btn gst" onclick="shareGeneral(fsQ[fsIdx])" title="Share">↗ Share</button>`;
+
+  // Related quotes section
+  const related = Q.filter(rq => rq.cat === q.cat && rq.id !== q.id).slice(0,4);
+  const relEl = document.getElementById('fsRelated');
+  if (relEl && related.length) {
+    relEl.innerHTML = `
+      <div class="fs-rel-title">More ${q.cat||'Wisdom'} Quotes</div>
+      <div class="fs-rel-grid">
+        ${related.map((rq,ri) => `
+          <div class="fs-rel-card" onclick="goFS(fsQ.findIndex(x=>x.id===${rq.id})>=0?fsQ.findIndex(x=>x.id===${rq.id}):fsQ.push(rq)&&fsQ.length-1)">
+            <div class="fs-rel-q">"${rq.q.substring(0,60)}${rq.q.length>60?'...':''}"</div>
+            <div class="fs-rel-a">— ${rq.a}</div>
+          </div>`).join('')}
+      </div>`;
+    relEl.style.display = 'block';
+  } else if (relEl) { relEl.style.display = 'none'; }
+}
+function fsNext(){ if(fsIdx<fsQ.length-1) goFS(fsIdx+1); }
+function fsPrev(){ if(fsIdx>0) goFS(fsIdx-1); }
+function closeFS(){
+  document.getElementById('fsm').classList.remove('open');
+  document.body.style.overflow='';
+  // Restore URL
+  try { history.replaceState({}, '', '/'); } catch(e) {}
+  document.title = 'Daniel Wisdom Hub';
+}
+// touch swipe
+let _ts=0,_tx=0;
+document.getElementById('fsm').addEventListener('touchstart',e=>{ _ts=e.touches[0].clientX; _tx=e.touches[0].clientY; },{passive:true});
+document.getElementById('fsm').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-_ts, dy=e.changedTouches[0].clientY-_tx;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>44){ dx<0?fsNext():fsPrev(); }
+},{passive:true});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('fsm').classList.contains('open')) return;
+  if(e.key==='ArrowRight') fsNext();
+  else if(e.key==='ArrowLeft') fsPrev();
+  else if(e.key==='Escape') closeFS();
+});
+
+/* ══════════════════════════════════════════════
+   VIRAL FEED (TikTok-style)
+══════════════════════════════════════════════ */
+function initViral(){
+  const wrap=document.getElementById('viralWrap');
+  if(wrap.children.length>0) return;
+  const pool=shuffle(Q);
+  window._vPool=pool;
+  wrap.innerHTML=pool.map((q,i)=>{
+    const bg=q.bgOptions?.[bgMap[q.id]||0]||q.img;
+    const sv=savedIds.has(q.id);
+    const meta=CAT_META[(q.cat||'motivation').toLowerCase()]||CAT_META.motivation;
+    return `<div class="vs" style="background-image:url('${bg}')">
+      <div class="vs-prog"><div class="vs-bar" id="vb${i}"></div></div>
+      <div class="vs-side">
+        <button class="vs-sib${sv?' liked':''}" onclick="vsSave(${q.id},this)">
+          <div class="vs-sic" style="font-size:22px">${sv?'❤️':'🤍'}</div>
+          <div class="vs-sil">${sv?'Saved':'Save'}</div>
+        </button>
+        <button class="vs-sib" onclick="dlQuote(${q.id})">
+          <div class="vs-sic">📲</div><div class="vs-sil">Download</div>
+        </button>
+        <button class="vs-sib" onclick="shareWhatsApp(window._vPool[${i}])">
+          <div class="vs-sic">💬</div><div class="vs-sil">WhatsApp</div>
+        </button>
+        <button class="vs-sib" onclick="shareCaption(window._vPool[${i}])">
+          <div class="vs-sic">📋</div><div class="vs-sil">Copy</div>
+        </button>
+        <button class="vs-sib" onclick="cycBg(${q.id})">
+          <div class="vs-sic">🌄</div><div class="vs-sil">Theme</div>
+        </button>
+      </div>
+      <div class="vs-body">
+        <div class="vs-cat">${meta.icon} ${meta.label}</div>
+        <div class="vs-q">"${q.q}"</div>
+        <div class="vs-a">— ${q.a}</div>
+        <div class="vs-acts">
+          <button class="vs-btn w">Expand ↗</button>
+          <button class="vs-btn t" onclick="goView('home')">← Home</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  wrap.querySelectorAll('.vs').forEach((slide,i)=>{
+    slide.querySelector('.vs-btn.w').onclick=()=>openFS(window._vPool,i);
+  });
+  startViral(pool.length);
+  wrap.addEventListener('touchstart',()=>{ viralPaused=true; clearInterval(viralTimer); clearInterval(viralProg); },{passive:true});
+  wrap.addEventListener('touchend',()=>{ setTimeout(()=>{ viralPaused=false; startViral(pool.length); },3500); },{passive:true});
+}
+function startViral(total){
+  if(viralPaused) return;
+  clearInterval(viralTimer); clearInterval(viralProg);
+  const DUR=5000; let elapsed=0;
+  const bar=()=>document.getElementById('vb'+viralIdx);
+  if(bar()) bar().style.width='0%';
+  viralProg=setInterval(()=>{ elapsed+=100; const b=bar(); if(b) b.style.width=Math.min(elapsed/DUR*100,100)+'%'; },100);
+  viralTimer=setInterval(()=>{
+    clearInterval(viralProg); elapsed=0;
+    viralIdx=(viralIdx+1)%total;
+    const slides=document.querySelectorAll('.vs');
+    if(slides[viralIdx]) slides[viralIdx].scrollIntoView({behavior:'smooth'});
+    if(bar()) bar().style.width='0%';
+    viralProg=setInterval(()=>{ elapsed+=100; const b=bar(); if(b) b.style.width=Math.min(elapsed/DUR*100,100)+'%'; },100);
+  },DUR);
+}
+
+/* ══════════════════════════════════════════════
+   SAVED VIEW
+══════════════════════════════════════════════ */
+function renderSaved(){
+  const grid=document.getElementById('savedGrid');
+  const empty=document.getElementById('savedEmpty');
+  const arr=Q.filter(q=>savedIds.has(q.id));
+  grid.innerHTML='';
+  if(!arr.length){
+    empty.innerHTML=`<div class="empty"><div class="empty-i">🔖</div><div class="empty-t">No saved quotes yet</div><div class="empty-s">Tap 🤍 on any quote to save it</div></div>`;
+    return;
+  }
+  empty.innerHTML='';
+  arr.forEach((q,i)=>{
+    const bg=q.bgOptions?.[bgMap[q.id]||0]||q.img;
+    const d=document.createElement('div');
+    d.className='qc'; d.style.cssText=`background-image:url('${bg}');animation-delay:${i*.05}s`;
+    d.innerHTML=`<div class="qc-inner">
+      <div class="qc-text">"${q.q}"</div>
+      <div class="qc-author">— ${q.a}</div>
+      <div class="qc-acts">
+        <button class="qa sv" id="sb${q.id}" onclick="event.stopPropagation();toggleSave(${q.id},this)">❤️</button>
+        <button class="qa" onclick="event.stopPropagation();dlQuote(${q.id})">📲</button>
+      </div>
+    </div>`;
+    d.addEventListener('click',()=>openFS(arr,i));
+    grid.appendChild(d);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   PROFILE
+══════════════════════════════════════════════ */
+function renderProfile(){
+  const notifOn=localStorage.getItem('dwh_notif')==='on';
+  const isDark=localStorage.getItem('dwh_theme')!=='light';
+  document.getElementById('profStats').innerHTML=[
+    {n:Q.length,l:'Total Quotes'},
+    {n:savedIds.size,l:'Saved'},
+    {n:A.length,l:'Articles'},
+  ].map(s=>`<div class="ps"><div class="ps-n">${s.n}</div><div class="ps-l">${s.l}</div></div>`).join('');
+  document.getElementById('profMenu').innerHTML=`
+    <div class="pm" onclick="window.location='admin.html'">
+      <div class="pm-ic">⚙️</div>
+      <div class="pm-tx"><div class="pm-h">Admin Panel</div><div class="pm-s">Manage quotes, articles & AI</div></div>
+      <div class="pm-arr">›</div>
+    </div>
+    <div class="pm" onclick="toggleNotifSetting()">
+      <div class="pm-ic">🔔</div>
+      <div class="pm-tx"><div class="pm-h">Daily Notifications</div><div class="pm-s">Wisdom quote every morning at 8 AM</div></div>
+      <div class="tog${notifOn?' on':''}" id="notifTog"><div class="tog-k"></div></div>
+    </div>
+    <div class="pm" onclick="toggleTheme()">
+      <div class="pm-ic" id="themeIc">${isDark?'🌙':'☀️'}</div>
+      <div class="pm-tx"><div class="pm-h">${isDark?'Dark Mode':'Light Mode'}</div><div class="pm-s">${isDark?'Switch to light':'Switch to dark'}</div></div>
+      <div class="tog${isDark?' on':''}" id="themeTog"><div class="tog-k"></div></div>
+    </div>
+    <div class="pm" onclick="resetAll()">
+      <div class="pm-ic">🗑️</div>
+      <div class="pm-tx"><div class="pm-h">Reset All Data</div><div class="pm-s">Clear saved quotes and preferences</div></div>
+      <div class="pm-arr">›</div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════
+   THEME
+══════════════════════════════════════════════ */
+function toggleTheme(){
+  const isLight=document.body.classList.contains('light');
+  if(isLight){
+    document.body.classList.remove('light');
+    localStorage.setItem('dwh_theme','dark');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#080810');
+    showToast('🌙 Dark mode');
+  } else {
+    document.body.classList.add('light');
+    localStorage.setItem('dwh_theme','light');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#f5f4ff');
+    showToast('☀️ Light mode');
+  }
+  renderProfile();
+}
+(function(){
+  const theme=localStorage.getItem('dwh_theme');
+  if(theme==='light'){
+    document.body.classList.add('light');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#f5f4ff');
+  }
+})();
+
+/* ══════════════════════════════════════════════
+   NOTIFICATIONS
+══════════════════════════════════════════════ */
+const VAPID_KEY='BIQPlqVnAfr1YRODHFnzdSzKKLeegSNl959NJVeNNJif74G76_iBrwszKcVsfbGXSABDz0J9OdZmFyejS03JQ9M';
+const FB_PROJECT='daniel-wisdom-hub';
+const FB_BASE=`https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents`;
+
+async function saveTokenToFirebase(fcmToken){
+  try{
+    let deviceId=localStorage.getItem('dwh_device_id');
+    if(!deviceId){ deviceId='device_'+Date.now()+'_'+Math.random().toString(36).slice(2,9); localStorage.setItem('dwh_device_id',deviceId); }
+    const platform=/iPhone|iPad|Android/i.test(navigator.userAgent)?'mobile':'desktop';
+    await fetch(`${FB_BASE}/push_tokens/${deviceId}`,{
+      method:'PATCH',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{token:{stringValue:deviceId},fcmToken:{stringValue:fcmToken||deviceId},date:{stringValue:new Date().toLocaleString()},platform:{stringValue:platform},active:{booleanValue:true}}})
+    });
+  }catch(e){}
+}
+async function getFCMToken(){
+  try{
+    if(!window._fbOk||typeof firebase==='undefined') return null;
+    const reg=await navigator.serviceWorker.register('/sw.js');
+    await navigator.serviceWorker.ready;
+    const messaging=firebase.messaging();
+    return await messaging.getToken({vapidKey:VAPID_KEY,serviceWorkerRegistration:reg});
+  }catch(e){ return null; }
+}
+async function reqNotif(){
+  dismissBanner();
+  if(!('Notification'in window)){ showToast('❌ Not supported'); return; }
+  try{
+    const perm=await Notification.requestPermission();
+    if(perm==='granted'){
+      localStorage.setItem('dwh_notif','on');
+      _notifUI(true); showToast('✅ Notifications enabled!');
+      scheduleDaily();
+      const tok=await getFCMToken(); await saveTokenToFirebase(tok);
+      if('serviceWorker'in navigator){
+        const reg=await navigator.serviceWorker.ready.catch(()=>null);
+        if(reg?.periodicSync) await reg.periodicSync.register('dwh-daily',{minInterval:86400000}).catch(()=>{});
+      }
+    } else showToast('Permission denied');
+  }catch{ showToast('Could not enable notifications'); }
+}
+function _notifUI(on){
+  const tog=document.getElementById('notifTog'); if(tog) tog.classList.toggle('on',on);
+  const bell=document.getElementById('notifBtn'); if(bell) on?bell.classList.remove('ni-dot'):bell.classList.add('ni-dot');
+}
+function toggleNotifSetting(){
+  if(localStorage.getItem('dwh_notif')==='on'){ localStorage.setItem('dwh_notif','off'); _notifUI(false); showToast('🔕 Notifications off'); }
+  else reqNotif();
+}
+function scheduleDaily(){
+  const now=new Date(),next=new Date(now);
+  next.setHours(8,0,0,0); if(next<=now) next.setDate(next.getDate()+1);
+  setTimeout(()=>{ fireNotif(); setInterval(fireNotif,86400000); },next-now);
+}
+function _doNotify(title,opts){
+  if('serviceWorker'in navigator&&navigator.serviceWorker.controller){
+    navigator.serviceWorker.ready.then(r=>r.showNotification(title,opts)).catch(()=>{ try{ new Notification(title,opts); }catch(e){} });
+  }else{ try{ new Notification(title,opts); }catch(e){} }
+}
+function fireNotif(){
+  if(Notification.permission!=='granted') return;
+  const q=Q[Math.floor(Date.now()/86400000)%Q.length]; if(!q) return;
+  const s=q.q.length>80?q.q.substring(0,80)+'…':q.q;
+  _doNotify('Daniel Wisdom Hub ✨',{body:`"${s}" — ${q.a}`,tag:'dwh-daily',icon:'/icon.png',vibrate:[200,100,200],data:{url:'/'}});
+}
+function dismissBanner(){ document.getElementById('notif-banner').classList.add('gone'); localStorage.setItem('dwh_nb','1'); }
+function handleBellClick(){
+  const isOn=localStorage.getItem('dwh_notif')==='on';
+  if(isOn){ goView('profile'); showToast('🔔 Notifications are ON'); }
+  else if(Notification.permission==='denied'){ showToast('⚠️ Enable in browser settings'); }
+  else showNotifPopup();
+}
+function showNotifPopup(){ setTimeout(()=>document.getElementById('notif-popup').classList.add('show'),200); }
+function popupEnable(){ document.getElementById('notif-popup').classList.remove('show'); localStorage.setItem('dwh_nb','asked'); setTimeout(()=>reqNotif(),300); }
+function popupDismiss(type){ document.getElementById('notif-popup').classList.remove('show'); type==='never'?localStorage.setItem('dwh_nb','never'):localStorage.setItem('dwh_nb_later',Date.now()+(3*24*60*60*1000)); }
+
+/* ══════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════ */
+document.getElementById('searchInput').addEventListener('input',e=>{
+  const term=e.target.value.toLowerCase().trim();
+  if(!term){ closeCatBrowser(); return; }
+  const results=Q.filter(q=>q.q.toLowerCase().includes(term)||q.a.toLowerCase().includes(term));
+  // Reuse openCatBrowser flow but with search results
+  cbQ=results;
+  document.getElementById('cbTitle').textContent=`🔍 "${term}"`;
+  document.getElementById('cbCount').textContent=`${results.length} result${results.length!==1?'s':''}`;
+  const feed=document.getElementById('cbFeed');
+  feed.innerHTML='';
+  cbActiveIdx=0;
+  if(!results.length){
+    feed.innerHTML=`<div class="cb-empty"><div class="cb-empty-i">🔍</div><div class="cb-empty-t">No results</div><div class="cb-empty-s">Try different keywords</div></div>`;
+  } else {
+    results.forEach((q,i)=>{
+      const bi=bgMap[q.id]||0;
+      const bg=q.bgOptions?.[bi]||q.img;
+      const sv=savedIds.has(q.id);
+      const meta=CAT_META[(q.cat||'').toLowerCase()]||CAT_META.motivation;
+      const slide=document.createElement('div');
+      slide.className='cb-slide'; slide.id='cbs'+q.id;
+      slide.style.backgroundImage=`url('${bg}')`;
+      slide.innerHTML=`
+        <div class="cb-prog"><div class="cb-bar" id="cbbar${i}"></div></div>
+        <div class="cb-side">
+          <button class="cb-sib${sv?' saved':''}" id="cbsv${q.id}" onclick="cbToggleSave(${q.id},${i})">
+            <div class="cb-sic">${sv?'❤️':'🤍'}</div><div class="cb-sil">${sv?'Saved':'Save'}</div>
+          </button>
+          <button class="cb-sib" onclick="dlQuote(${q.id})">
+            <div class="cb-sic">📲</div><div class="cb-sil">Download</div>
+          </button>
+        </div>
+        <div class="cb-body">
+          <div class="cb-cat-tag">${meta.icon} ${meta.label}</div>
+          <div class="cb-q">"${q.q}"</div>
+          <div class="cb-a">— ${q.a}</div>
+          <div class="cb-btns">
+            <button class="cb-btn wh" onclick="dlQuote(${q.id})">📲 Download</button>
+            <button class="cb-btn tr" onclick="cbCopyQuote(${q.id})">📋 Copy</button>
+          </div>
+        </div>`;
+      feed.appendChild(slide);
+    });
+  }
+  document.getElementById('catBrowser').classList.add('open');
+  document.body.style.overflow='hidden';
+  feed.scrollTop=0;
+  const hint=document.getElementById('cbHint');
+  hint.style.opacity='1';
+  setTimeout(()=>hint.style.opacity='0',2500);
+  cbStartProg(0);
+  feed.onscroll=()=>{
+    const newIdx=Math.round(feed.scrollTop/window.innerHeight);
+    if(newIdx!==cbActiveIdx){ cbActiveIdx=newIdx; cbStartProg(newIdx); }
+  };
+});
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+let _toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),2700);
+}
+
+function resetAll(){
+  if(!confirm('Reset all data? Cannot be undone.')) return;
+  ['dwh_q','dwh_a','dwh_bg','dwh_sv','dwh_notif','dwh_nb','dwh_nb_later','dwh_device_id'].forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+
+/* ══════════════════════════════════════════════
+   SERVICE WORKER
+══════════════════════════════════════════════ */
+if('serviceWorker'in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+
+/* ══════════════════════════════════════════════
+   CROSS-TAB SYNC
+══════════════════════════════════════════════ */
+window.addEventListener('storage',e=>{
+  if(e.key==='dwh_q'||e.key==='dwh_a'){
+    loadData();
+    buildHero(); buildToday(); renderArts(); buildHomeCatGrid();
+    showToast('🔄 Content updated!');
+  }
+});
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+loadData();
+buildHero();
+buildToday();
+renderArts();
+buildHomeCatGrid();
+
+// Notif banner check
+const _nbNever=localStorage.getItem('dwh_nb')==='never';
+const _nbAsked=localStorage.getItem('dwh_nb')==='asked';
+const _nbLater=parseInt(localStorage.getItem('dwh_nb_later')||'0');
+const _notifOn=localStorage.getItem('dwh_notif')==='on';
+const _hasNotif='Notification'in window;
+const _alreadyGranted=_hasNotif&&Notification.permission==='granted';
+if(localStorage.getItem('dwh_nb')==='1'||_nbNever||_nbAsked||_notifOn||_alreadyGranted){
+  document.getElementById('notif-banner').classList.add('gone');
+}
+if(!_nbNever&&!_nbAsked&&!_notifOn&&!_alreadyGranted&&_hasNotif&&(!_nbLater||Date.now()>_nbLater)){
+  setTimeout(()=>showNotifPopup(),3000);
+}
+if(_notifOn){ _notifUI(true); scheduleDaily(); } else _notifUI(false);
+</script>
+</body>
+</html>

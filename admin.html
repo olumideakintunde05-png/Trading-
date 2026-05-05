@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin — Daniel Wisdom Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#08080d;--bg1:#0f0f16;--bg2:#16161f;--bg3:#1e1e2a;--bg4:#252532;
+  --line:rgba(255,255,255,0.06);--line2:rgba(255,255,255,0.11);
+  --txt:#f0effe;--txt2:#a09fc0;--mute:#5a5872;
+  --p:#8b5cf6;--pk:#ec4899;--or:#f97316;
+  --g:linear-gradient(135deg,#8b5cf6,#ec4899,#f97316);
+  --green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --r:12px;--ui:'Space Grotesk',sans-serif;--mo:'DM Mono',monospace;
+  --ease:cubic-bezier(.4,0,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--txt);font-family:var(--ui);overflow:hidden;display:flex}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-thumb{background:var(--p);border-radius:9px}
+button,input,textarea,select{font-family:inherit}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer;}
+a{text-decoration:none;color:inherit}
+
+/* ── LOGIN ── */
+#loginScreen{
+  position:fixed;inset:0;z-index:999;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 25% 40%,rgba(139,92,246,.12),transparent 55%),
+             radial-gradient(ellipse at 75% 70%,rgba(236,72,153,.08),transparent 55%),var(--bg);
+  padding:20px;
+}
+.lcard{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:20px;padding:36px 30px;
+  width:100%;max-width:360px;text-align:center;
+}
+.llogo{
+  font-size:20px;font-weight:700;background:var(--g);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:4px;
+}
+.lsub{color:var(--mute);font-size:13px;margin-bottom:28px}
+.lfield{text-align:left;margin-bottom:16px}
+.llabel{
+  display:block;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;
+  color:var(--mute);margin-bottom:6px;
+}
+.linput{
+  width:100%;background:var(--bg2);border:1px solid var(--line);
+  border-radius:9px;padding:11px 14px;color:var(--txt);
+  font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.linput:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+.lbtn{
+  width:100%;padding:13px;background:var(--g);border:none;
+  border-radius:9px;color:#fff;font-size:14px;font-weight:700;
+  cursor:pointer;margin-top:6px;transition:opacity .2s,transform .15s;
+}
+.lbtn:hover{opacity:.9}.lbtn:active{transform:scale(.98)}
+.lbtn{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.lerr{color:var(--red);font-size:12px;margin-top:10px;display:none}
+.lhint{font-size:11px;color:var(--mute);margin-top:14px}
+
+/* ── SIDEBAR ── */
+#sidebar{
+  width:230px;flex-shrink:0;background:var(--bg1);
+  border-right:1px solid var(--line);display:flex;
+  flex-direction:column;height:100vh;overflow-y:auto;
+  transition:transform .3s var(--ease);
+}
+.sidebar-logo{
+  padding:20px 18px 16px;border-bottom:1px solid var(--line);
+}
+.sidebar-brand{
+  font-size:15px;font-weight:700;background:var(--g);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.sidebar-sub{font-size:11px;color:var(--mute);margin-top:2px}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 18px;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--mute);
+  transition:all .18s var(--ease);margin:1px 0;
+  border-right:3px solid transparent;
+  /* Fix mobile tap delay */
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
+}
+.nav-item:hover{background:var(--bg2);color:var(--txt)}
+.nav-item.on{background:rgba(139,92,246,.1);color:var(--p);border-right-color:var(--p)}
+.nav-item:active{background:rgba(139,92,246,.15);transform:scale(.98)}
+.nav-ic{font-size:17px}
+.sidebar-gap{flex:1}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--line)}
+.back-link{
+  display:block;text-align:center;
+  font-size:12px;color:var(--mute);margin-bottom:10px;
+}
+.logout-btn{
+  width:100%;padding:9px;border-radius:8px;
+  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);
+  color:var(--red);font-size:12px;font-weight:700;cursor:pointer;
+  transition:background .2s;
+}
+.logout-btn:hover{background:rgba(239,68,68,.18)}
+
+/* ── MAIN ── */
+#main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.top-bar{
+  height:54px;display:flex;align-items:center;
+  padding:0 22px;gap:14px;border-bottom:1px solid var(--line);
+  flex-shrink:0;background:var(--bg1);
+}
+.menu-toggle{
+  display:none;background:var(--bg2);border:1px solid var(--line);
+  color:var(--txt);padding:6px 10px;border-radius:7px;cursor:pointer;font-size:16px;
+}
+.top-title{font-size:16px;font-weight:700}
+.top-actions{margin-left:auto;display:flex;gap:8px}
+.tbtn{
+  padding:7px 16px;border-radius:8px;border:none;
+  font-family:var(--ui);font-size:12px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:5px;transition:all .18s;
+}
+.tbtn:hover{opacity:.88;transform:scale(1.03)}
+.tbtn.primary{background:var(--g);color:#fff}
+.tbtn.secondary{background:var(--bg3);border:1px solid var(--line);color:var(--txt)}
+
+/* ── PAGES ── */
+.content{flex:1;overflow-y:auto;padding:22px}
+.page{display:none}.page.on{display:block}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.stat-box{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:var(--r);padding:18px;
+}
+.stat-num{
+  font-size:26px;font-weight:800;background:var(--g);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{font-size:12px;color:var(--mute);margin-top:3px}
+
+/* ── CARDS ── */
+.acard{background:var(--bg1);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:18px}
+.acard-title{font-size:15px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:7px}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg{margin-bottom:15px}
+.fl{
+  display:block;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;
+  color:var(--mute);margin-bottom:6px;
+}
+.fi{
+  width:100%;background:var(--bg2);border:1px solid var(--line);
+  border-radius:9px;padding:10px 13px;color:var(--txt);
+  font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.fi:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(139,92,246,.12)}
+textarea.fi{resize:vertical;min-height:84px}
+select.fi{cursor:pointer}
+.fhint{font-size:11px;color:var(--mute);margin-top:4px}
+.btn-row{display:flex;gap:9px;margin-top:4px;flex-wrap:wrap}
+.btn{
+  padding:9px 18px;border-radius:8px;font-family:var(--ui);
+  font-size:12px;font-weight:700;cursor:pointer;border:none;
+  display:flex;align-items:center;gap:5px;transition:all .18s;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
+}
+.btn:hover{opacity:.88;transform:scale(1.02)}
+.btn:active{transform:scale(.96);opacity:.85}
+.btn.prim{background:var(--g);color:#fff}
+.btn.sec{background:var(--bg3);border:1px solid var(--line);color:var(--txt)}
+.btn.danger{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--red)}
+.btn.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green)}
+.img-preview{
+  width:100%;height:110px;border-radius:9px;
+  background-size:cover;background-position:center;
+  background-color:var(--bg3);border:2px dashed var(--line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mute);font-size:12px;margin-top:6px;transition:all .3s;
+  overflow:hidden;
+}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1px;color:var(--mute);
+  padding:9px 13px;text-align:left;
+  border-bottom:1px solid var(--line);white-space:nowrap;
+}
+td{
+  padding:11px 13px;font-size:13px;
+  border-bottom:1px solid var(--line);vertical-align:middle;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+.tthumb{
+  width:48px;height:38px;border-radius:6px;
+  background-size:cover;background-position:center;flex-shrink:0;
+}
+.ttext{max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+.badge{
+  display:inline-block;padding:3px 9px;border-radius:50px;
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+}
+.badge.wisdom{background:rgba(139,92,246,.15);color:var(--p)}
+.badge.life{background:rgba(34,197,94,.12);color:var(--green)}
+.badge.success{background:rgba(249,115,22,.12);color:var(--or)}
+.badge.proverbs{background:rgba(236,72,153,.12);color:var(--pk)}
+
+/* ── AI OUTPUT ── */
+.ai-out{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:9px;padding:16px;margin-top:14px;
+  font-size:13px;line-height:1.7;display:none;
+}
+.ai-out.show{display:block}
+.gen-bar{
+  display:none;align-items:center;gap:9px;
+  color:var(--mute);font-size:13px;margin-top:12px;
+}
+.gen-bar.show{display:flex}
+.spin{
+  width:17px;height:17px;border-radius:50%;
+  border:2px solid var(--line2);border-top-color:var(--p);
+  animation:sp .7s linear infinite;
+}
+@keyframes sp{to{transform:rotate(360deg)}}
+.gen-q-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.gen-q-item{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:9px;padding:12px 14px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.gen-q-body{flex:1}
+.gen-q-text{font-size:13px;font-style:italic;line-height:1.5}
+.gen-q-meta{font-size:11px;color:var(--mute);margin-top:3px}
+.gen-q-acts{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+
+/* ── NOTIF PANEL ── */
+.notif-preview{
+  background:var(--bg3);border:1px solid var(--line);
+  border-radius:12px;padding:16px 18px;
+  display:flex;gap:12px;margin-top:16px;
+}
+.np-icon{font-size:30px}
+.np-title{font-size:14px;font-weight:700;margin-bottom:2px}
+.np-body{font-size:12px;color:var(--txt2);line-height:1.5}
+.token-list{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:9px;padding:12px;font-family:var(--mo);
+  font-size:11px;color:var(--mute);max-height:120px;overflow-y:auto;
+  white-space:pre-wrap;word-break:break-all;
+}
+
+/* ── MODAL ── */
+#editModal{
+  position:fixed;inset:0;z-index:600;display:none;
+  align-items:center;justify-content:center;padding:20px;
+}
+#editModal.open{display:flex}
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px)}
+.modal-card{
+  position:relative;z-index:1;
+  background:var(--bg1);border:1px solid var(--line2);
+  border-radius:18px;padding:24px 22px;
+  width:100%;max-width:500px;max-height:90vh;overflow-y:auto;
+}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:18px}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--bg3);border:1px solid var(--line2);
+  color:var(--txt);padding:10px 20px;border-radius:50px;
+  font-size:12px;font-weight:600;
+  opacity:0;transition:all .28s var(--ease);
+  pointer-events:none;z-index:999;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
+  transform:translateY(8px);
+}
+#toast.show{opacity:1;transform:none}
+
+/* ── CAT IMAGE MAP ── */
+.ci-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:6px}
+.ci-item{
+  border-radius:7px;overflow:hidden;cursor:pointer;
+  border:2px solid transparent;transition:all .18s;
+  aspect-ratio:1;background-size:cover;background-position:center;
+  position:relative;
+}
+.ci-item.sel{border-color:var(--p);box-shadow:0 0 0 2px rgba(139,92,246,.35)}
+.ci-item:hover{transform:scale(1.05)}
+
+@media(max-width:768px){
+  #sidebar{position:fixed;top:0;left:0;bottom:0;z-index:50;transform:translateX(-100%)}
+  #sidebar.open{transform:none}
+  .menu-toggle{display:block}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .form-grid{grid-template-columns:1fr}
+  #main{width:100%}
+}
+</style>
+<script id="dataInjector">
+/*
+ * ╔════════════════════════════════════════════════════════════╗
+ * ║  FIXED DATA INJECTOR — v4.0                                ║
+ * ║  ROOT CAUSE OF BUG: old injector ran on every page load    ║
+ * ║  and filtered out AI-generated quotes (id > 1000),        ║
+ * ║  wiping them from localStorage each time admin opened.    ║
+ * ║                                                            ║
+ * ║  FIX: base quotes (id 1000-1999) are only injected ONCE    ║
+ * ║  using a version flag. AI quotes (id >= 2000000000000)    ║
+ * ║  are NEVER touched by this injector. They are permanent.  ║
+ * ╚════════════════════════════════════════════════════════════╝
+ */
+(function() {
+  var INJECTOR_VERSION = 'dwh_injected_v4';
+
+  // ── BASE QUOTES (id 1000–1099) ──
+  // These are only written ONCE. After that the version flag prevents re-injection.
+  var BASE_QUOTES = [{"id":1000,"q":"Success begins when excuses end.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80","https://images.unsplash.com/photo-1434030216411-0b793f4b6f74?w=600&q=80"]},{"id":1001,"q":"Small steps repeated daily create extraordinary results.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=600&q=80","https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&q=80"]},{"id":1002,"q":"Discipline is choosing progress even when motivation disappears.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600&q=80","https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&q=80"]},{"id":1003,"q":"Your mindset determines how far your future can expand.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80","https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80"]},{"id":1004,"q":"Growth starts the moment comfort stops controlling you.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80","https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80"]},{"id":1005,"q":"Confidence grows every time you take bold action.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1491975474562-1f4e30bc9468?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1491975474562-1f4e30bc9468?w=600&q=80"]},{"id":1006,"q":"Hard work today builds opportunities for tomorrow.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1519750783826-e2420f4d687f?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1519750783826-e2420f4d687f?w=600&q=80"]},{"id":1007,"q":"Focus on progress instead of chasing perfection.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80"]},{"id":1008,"q":"Every new day gives another chance to improve yourself.","a":"Anonymous","cat":"life","img":"https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&q=80"]},{"id":1009,"q":"Success belongs to those who refuse to quit early.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80"]},{"id":1010,"q":"Dreams work only when consistent effort follows them.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80"]},{"id":1011,"q":"Patience and persistence always outperform talent alone.","a":"Anonymous","cat":"wisdom","img":"https://images.unsplash.com/photo-1573497019236-17f8177b81e8?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1573497019236-17f8177b81e8?w=600&q=80"]},{"id":1012,"q":"Your habits quietly shape the life you live.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=600&q=80"]},{"id":1013,"q":"Fear fades when courage becomes your routine.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=600&q=80"]},{"id":1014,"q":"Keep moving forward even when progress feels slow.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80"]},{"id":1015,"q":"Success rewards those who stay committed long enough.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=600&q=80"]},{"id":1016,"q":"The journey matters as much as the destination.","a":"Anonymous","cat":"life","img":"https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80"]},{"id":1017,"q":"Believe in your growth even before results appear.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1550439062-609e1531270e?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1550439062-609e1531270e?w=600&q=80"]},{"id":1018,"q":"Great achievements start with small brave decisions.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&q=80"]},{"id":1019,"q":"Consistency turns ordinary effort into powerful success.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=80"]},{"id":1020,"q":"Stop waiting for perfect timing and start now.","a":"Anonymous","cat":"hustle","img":"https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=600&q=80"]},{"id":1021,"q":"Every failure carries a lesson preparing you for success.","a":"Anonymous","cat":"wisdom","img":"https://images.unsplash.com/photo-1468779036391-52341f60b55d?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1468779036391-52341f60b55d?w=600&q=80"]},{"id":1022,"q":"Confidence is built through repeated courageous action.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1474314881477-04c4aac40a0e?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1474314881477-04c4aac40a0e?w=600&q=80"]},{"id":1023,"q":"Discipline today creates freedom tomorrow.","a":"Anonymous","cat":"mindset","img":"https://images.unsplash.com/photo-1477238134895-98438ad85c30?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1477238134895-98438ad85c30?w=600&q=80"]},{"id":1024,"q":"Your future improves when daily actions improve.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=600&q=80"]},{"id":1025,"q":"Progress happens when excuses lose their power.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1487611459768-bd414656ea10?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1487611459768-bd414656ea10?w=600&q=80"]},{"id":1026,"q":"Work quietly and let success make the noise.","a":"Anonymous","cat":"hustle","img":"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80"]},{"id":1027,"q":"Growth requires patience and steady commitment.","a":"Anonymous","cat":"wisdom","img":"https://images.unsplash.com/photo-1499678329028-101435ad827d?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1499678329028-101435ad827d?w=600&q=80"]},{"id":1028,"q":"Show up daily even when motivation is missing.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1502101872923-d48509bff386?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1502101872923-d48509bff386?w=600&q=80"]},{"id":1029,"q":"Success is earned through persistence and resilience.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1503428593586-e225b39bde2a?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1503428593586-e225b39bde2a?w=600&q=80"]},{"id":1030,"q":"Dreams become reality through focused execution.","a":"Anonymous","cat":"success","img":"https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&q=80","bgOptions":["https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&q=80"]}];
+
+  try {
+    var existing = JSON.parse(localStorage.getItem('dwh_q') || '[]');
+
+    // Check if base quotes already injected
+    var alreadyInjected = localStorage.getItem(INJECTOR_VERSION) === '1';
+
+    if (!alreadyInjected) {
+      // First time: merge base quotes with whatever is already stored
+      // Keep EVERYTHING already stored (including AI-generated quotes)
+      var existingIds = {};
+      existing.forEach(function(q){ existingIds[q.id] = true; });
+
+      // Add base quotes that don't already exist
+      var toAdd = BASE_QUOTES.filter(function(q){ return !existingIds[q.id]; });
+      var merged = existing.concat(toAdd);
+      localStorage.setItem('dwh_q', JSON.stringify(merged));
+      localStorage.setItem(INJECTOR_VERSION, '1');
+      console.log('✅ First run: injected', toAdd.length, 'base quotes. Total:', merged.length);
+    } else {
+      // Already injected — DO NOTHING. Do not touch dwh_q.
+      console.log('✅ Injector: already ran. Quotes preserved:', existing.length);
+    }
+
+    // ── Articles: same logic — only inject once ──
+    var ART_VERSION = 'dwh_art_v4';
+    var artAlreadyDone = localStorage.getItem(ART_VERSION) === '1';
+    if (!artAlreadyDone) {
+      var BASE_ARTICLES = [{"id":1,"cat":"wisdom","title":"10 Ancient Wisdom Principles That Still Work Today","preview":"From Stoic philosophy to Confucian thought, these timeless principles guide modern life.","img":"https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80","content":"<h3>Introduction</h3><p>Ancient wisdom endures because it speaks to the unchanging core of human experience.</p><h3>Memento Mori</h3><p>The Stoics reminded themselves of mortality to focus on what truly matters today.</p><h3>Know Thyself</h3><p>Self-awareness is the beginning of all wisdom — it shapes every decision you make.</p>"},{"id":2,"cat":"success","title":"The Science of Daily Habits That Build Extraordinary Lives","preview":"Research shows 45% of our actions are habits. Here is how to wire the right ones.","img":"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80","content":"<h3>Why Habits Beat Willpower</h3><p>Willpower is finite. Habits run on autopilot — building the right ones is the highest leverage activity available.</p><h3>The Two-Minute Rule</h3><p>If a habit takes under two minutes to start, begin with just that. Consistency beats intensity every time.</p>"},{"id":3,"cat":"life","title":"Why Gratitude Is the Most Powerful Mindset Shift","preview":"Neuroscience confirms gratitude rewires your brain for resilience and lasting joy.","img":"https://images.unsplash.com/photo-1445294211564-3ca59d999abd?w=600&q=80","content":"<h3>The Science</h3><p>Gratitude activates dopamine and serotonin — the same chemicals triggered by deeply positive experiences.</p><h3>Start Today</h3><p>Write three specific things you are grateful for every morning. Specificity is what makes it work.</p>"}];
+      var existingA = JSON.parse(localStorage.getItem('dwh_a') || '[]');
+      var existingAIds = {};
+      existingA.forEach(function(a){ existingAIds[a.id] = true; });
+      var toAddA = BASE_ARTICLES.filter(function(a){ return !existingAIds[a.id]; });
+      localStorage.setItem('dwh_a', JSON.stringify(existingA.concat(toAddA)));
+      localStorage.setItem(ART_VERSION, '1');
+      console.log('✅ Articles injected:', toAddA.length);
+    }
+
+  } catch(e) {
+    console.error('❌ Injector error:', e);
+  }
+})();
+</script>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="lcard">
+    <div class="llogo">Daniel Wisdom Hub</div>
+    <div class="lsub">Admin Control Panel</div>
+    <div class="lfield">
+      <label class="llabel">Username</label>
+      <input class="linput" type="text" id="lu" placeholder="admin" autocomplete="username"/>
+    </div>
+    <div class="lfield">
+      <label class="llabel">Password</label>
+      <input class="linput" type="password" id="lp" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"/>
+    </div>
+    <button class="lbtn" onclick="login()">🔐 Login to Admin Panel</button>
+    <div class="lerr" id="lerr">Invalid credentials. Try: admin / admin123</div>
+    <div class="lhint">Default credentials: <b>admin</b> / <b>admin123</b></div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-brand">Daniel Wisdom Hub</div>
+    <div class="sidebar-sub">Admin Panel v3.0</div>
+  </div>
+  <div class="nav-item on" onclick="goPage('dashboard',this)"><span class="nav-ic">📊</span> Dashboard</div>
+  <div class="nav-item" onclick="goPage('addQuote',this)"><span class="nav-ic">➕</span> Add Quote</div>
+  <div class="nav-item" onclick="goPage('manageQ',this)"><span class="nav-ic">💬</span> Manage Quotes</div>
+  <div class="nav-item" onclick="goPage('addArticle',this)"><span class="nav-ic">📝</span> Add Article</div>
+  <div class="nav-item" onclick="goPage('manageA',this)"><span class="nav-ic">📖</span> Manage Articles</div>
+  <div class="nav-item" onclick="goPage('aiQuotes',this)"><span class="nav-ic">🤖</span> AI Quote Gen</div>
+  <div class="nav-item" onclick="goPage('aiArticle',this)"><span class="nav-ic">✨</span> AI Article Gen</div>
+  <div class="nav-item" onclick="goPage('notifications',this)"><span class="nav-ic">📢</span> Notifications</div>
+  <div class="sidebar-gap"></div>
+  <div class="sidebar-footer">
+    <a href="index.html" class="back-link">← Back to Site</a>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+  </div>
+</div>
+
+<div id="main">
+  <div class="top-bar">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <span class="top-title" id="topTitle">Dashboard</span>
+    <div class="top-actions">
+      <a href="index.html" class="tbtn secondary">← View Site</a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page on" id="page-dashboard">
+      <div class="stats-row" id="statsRow"></div>
+      <div class="acard">
+        <div class="acard-title">📋 Recent Quotes</div>
+        <div class="tbl-wrap" id="recentQ"></div>
+      </div>
+    </div>
+
+    <!-- ADD QUOTE -->
+    <div class="page" id="page-addQuote">
+      <div class="acard">
+        <div class="acard-title">➕ Add New Quote</div>
+        <div class="form-grid">
+          <div>
+            <div class="fg"><label class="fl">Quote Text *</label><textarea class="fi" id="aq-text" placeholder="Enter the quote…"></textarea></div>
+            <div class="fg"><label class="fl">Author *</label><input class="fi" type="text" id="aq-author" placeholder="e.g. Mark Twain"/></div>
+            <div class="fg">
+              <label class="fl">Category *</label>
+              <select class="fi" id="aq-cat">
+                <option value="motivation">🚀 Motivation</option>
+                <option value="love">💖 Love</option>
+                <option value="savage">🔥 Savage</option>
+                <option value="success">💰 Success</option>
+                <option value="deep">🌌 Deep</option>
+                <option value="captions">📸 Captions</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div class="fg">
+              <label class="fl">Main Image URL *</label>
+              <input class="fi" type="text" id="aq-img" placeholder="Paste any image URL or Unsplash link" oninput="this.value=fixImgUrl(this.value)||this.value;previewImg(this.value,'aq-prev')"/>
+              <div class="img-preview" id="aq-prev">Image preview</div>
+            </div>
+            <div class="fg"><label class="fl">BG Option 2</label><input class="fi" type="text" id="aq-bg2" placeholder="https://…"/></div>
+            <div class="fg"><label class="fl">BG Option 3</label><input class="fi" type="text" id="aq-bg3" placeholder="https://…"/></div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn prim" onclick="addQuote()">💾 Save Quote</button>
+          <button class="btn sec" onclick="clearQForm()">🗑️ Clear Form</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANAGE QUOTES -->
+    <div class="page" id="page-manageQ">
+      <div class="acard">
+        <div class="acard-title">💬 Manage Quotes</div>
+        <div class="fg" style="margin-bottom:14px">
+          <input class="fi" type="text" id="qSearch" placeholder="🔍 Search quotes…" oninput="filterQTable(this.value)"/>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Image</th><th>Quote</th><th>Author</th><th>Category</th><th>Actions</th></tr></thead>
+            <tbody id="qTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD ARTICLE -->
+    <div class="page" id="page-addArticle">
+      <div class="acard">
+        <div class="acard-title">📝 Add New Article</div>
+        <div class="form-grid">
+          <div>
+            <div class="fg"><label class="fl">Title *</label><input class="fi" type="text" id="aa-title" placeholder="Article title…"/></div>
+            <div class="fg">
+              <label class="fl">Category</label>
+              <select class="fi" id="aa-cat">
+                <option value="motivation">🚀 Motivation</option>
+                <option value="love">💖 Love</option>
+                <option value="savage">🔥 Savage</option>
+                <option value="success">💰 Success</option>
+                <option value="deep">🌌 Deep</option>
+                <option value="captions">📸 Captions</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Preview *</label><textarea class="fi" id="aa-preview" placeholder="Short excerpt…" style="min-height:68px"></textarea></div>
+          </div>
+          <div>
+            <div class="fg">
+              <label class="fl">Cover Image URL</label>
+              <input class="fi" type="text" id="aa-img" placeholder="Paste any image URL or Unsplash link" oninput="this.value=fixImgUrl(this.value)||this.value;previewImg(this.value,'aa-prev')"/>
+              <div class="img-preview" id="aa-prev">Image preview</div>
+            </div>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Content (HTML)</label>
+          <textarea class="fi" id="aa-content" style="min-height:160px" placeholder="&lt;h3&gt;Section&lt;/h3&gt;&lt;p&gt;Content…&lt;/p&gt;"></textarea>
+          <div class="fhint">Use &lt;h3&gt; for headings, &lt;p&gt; for paragraphs</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn prim" onclick="addArticle()">📤 Publish Article</button>
+          <button class="btn sec" onclick="clearAForm()">🗑️ Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANAGE ARTICLES -->
+    <div class="page" id="page-manageA">
+      <div class="acard">
+        <div class="acard-title">📖 Manage Articles</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Image</th><th>Title</th><th>Category</th><th>Actions</th></tr></thead>
+            <tbody id="aTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI QUOTES -->
+    <div class="page" id="page-aiQuotes">
+      <div class="acard">
+        <div class="acard-title">🤖 Advanced AI Quote Generator</div>
+        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;line-height:1.5">
+          Generates 20 unique quotes per run · Never repeats · Auto category rotation · Dedup checking · SEO slugs
+        </div>
+
+        <div class="form-grid">
+          <div class="fg">
+            <label class="fl">Topic (optional — leave blank for auto)</label>
+            <input class="fi" type="text" id="ai-topic" placeholder="e.g. resilience, money, discipline…"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Category</label>
+            <select class="fi" id="ai-cat">
+              <option value="auto" selected>🔄 Auto Rotate</option>
+              <option value="motivation">🚀 Motivation</option>
+              <option value="love">💖 Love</option>
+              <option value="success">💰 Success</option>
+              <option value="deep">🌌 Deep</option>
+              <option value="savage">🔥 Savage</option>
+              <option value="wisdom">🧠 Wisdom</option>
+              <option value="mindset">💡 Mindset</option>
+              <option value="discipline">⚡ Discipline</option>
+              <option value="business">💼 Business</option>
+              <option value="life">🌿 Life</option>
+              <option value="confidence">👑 Confidence</option>
+              <option value="captions">📸 Captions</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Quantity</label>
+          <select class="fi" id="ai-count">
+            <option value="10">10 quotes</option>
+            <option value="20" selected>20 quotes</option>
+            <option value="30">30 quotes</option>
+          </select>
+        </div>
+
+        <div id="gen-stats" style="display:none;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:14px">
+          <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Generation Memory</div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span>Total generated:</span><span id="gs-total" style="color:var(--p);font-weight:700">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span>Duplicates rejected:</span><span id="gs-rej" style="color:#ef4444;font-weight:700">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px">
+            <span>Next auto category:</span><span id="gs-next" style="color:#22c55e;font-weight:700">—</span>
+          </div>
+        </div>
+
+        <div class="btn-row" style="gap:8px">
+          <button class="btn prim" id="genQBtn" onclick="genQuotes()" style="flex:2">🚀 Generate New Quotes</button>
+          <button class="btn sec" onclick="clearGenHistory()" title="Clear memory to reset dedup">🗑 Reset</button>
+        </div>
+        <div class="gen-bar" id="gen-q-bar"><div class="spin"></div> AI is crafting unique quotes…</div>
+        <div id="gen-q-results"></div>
+      </div>
+    </div>
+
+    <!-- AI ARTICLE -->
+    <div class="page" id="page-aiArticle">
+      <div class="acard">
+        <div class="acard-title">✨ Advanced AI Article Generator</div>
+        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;line-height:1.5">
+          Generates unique long-form articles · SEO title + meta · Unique image · Dedup by title · Regenerate instantly
+        </div>
+
+        <div class="form-grid">
+          <div class="fg">
+            <label class="fl">Article Topic *</label>
+            <input class="fi" type="text" id="ai-art-topic" placeholder="e.g. morning routines of billionaires…"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Category</label>
+            <select class="fi" id="ai-art-cat">
+              <option value="motivation">🚀 Motivation</option>
+              <option value="love">💖 Love</option>
+              <option value="success">💰 Success</option>
+              <option value="deep">🌌 Deep</option>
+              <option value="savage">🔥 Savage</option>
+              <option value="wisdom">🧠 Wisdom</option>
+              <option value="mindset">💡 Mindset</option>
+              <option value="discipline">⚡ Discipline</option>
+              <option value="business">💼 Business</option>
+              <option value="life">🌿 Life</option>
+              <option value="confidence">👑 Confidence</option>
+              <option value="captions">📸 Captions</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl">Writing Style</label>
+          <select class="fi" id="ai-art-style">
+            <option value="auto">🔄 Auto (varies each time)</option>
+            <option value="narrative story">Narrative Story</option>
+            <option value="step-by-step guide">Step-by-Step Guide</option>
+            <option value="psychological analysis">Psychological Analysis</option>
+            <option value="counterintuitive take">Counterintuitive Take</option>
+            <option value="data-driven breakdown">Data-Driven Breakdown</option>
+          </select>
+        </div>
+
+        <div class="btn-row" style="gap:8px">
+          <button class="btn prim" id="genABtn" onclick="genArticle()" style="flex:2">✨ Generate Article</button>
+          <button class="btn sec" onclick="clearArtHistory()" title="Clear article memory">🗑 Reset</button>
+        </div>
+        <div class="gen-bar" id="gen-a-bar"><div class="spin"></div> AI is writing your article…</div>
+        <div id="gen-a-result"></div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="page" id="page-notifications">
+      <div class="acard">
+        <div class="acard-title">📢 Send Notification</div>
+        <div class="fg"><label class="fl">Title</label><input class="fi" type="text" id="nt-title" value="Daniel Wisdom Hub ✨" placeholder="Notification title"/></div>
+        <div class="fg"><label class="fl">Message</label><textarea class="fi" id="nt-body" placeholder="Enter your message…" style="min-height:72px"></textarea></div>
+        <div class="fg"><label class="fl">Link (optional)</label><input class="fi" type="text" id="nt-url" value="/" placeholder="/"/></div>
+        <div class="btn-row">
+          <button class="btn prim" onclick="sendNotif()">📢 Send to All Users</button>
+          <button class="btn sec" onclick="previewNotif()">👁 Preview</button>
+        </div>
+        <div id="notif-preview-wrap"></div>
+        <div class="acard-title" style="margin-top:22px">📦 Stored Tokens</div>
+        <div class="token-list" id="tokenList">No push subscription tokens stored yet.</div>
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn danger" onclick="clearTokens()">🗑️ Clear All Tokens</button>
+          <button class="btn sec" onclick="refreshTokens()">🔄 Refresh</button>
+        </div>
+        <div class="fg" style="margin-top:18px">
+          <label class="fl">Notification Schedule</label>
+          <div style="background:var(--bg3);border-radius:9px;padding:13px;font-size:12px;color:var(--txt2);line-height:1.7">
+            ⏰ Daily notifications fire at <b>8:00 AM</b> local time for subscribed users.<br/>
+            📦 Push tokens are stored in localStorage (upgrade to a backend DB for production).<br/>
+            🛡️ Max 2 notifications per day enforced — no spam.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- EDIT MODAL -->
+<div id="editModal">
+  <div class="modal-bg" onclick="closeModal()"></div>
+  <div class="modal-card">
+    <div class="modal-title" id="modalTitle">Edit</div>
+    <div id="modalBody"></div>
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn prim" id="modalSave">💾 Save Changes</button>
+      <button class="btn sec" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════ AUTH ═══════════════════════ */
+const CREDS = { user: 'admin', pass: 'admin123' };
+
+function login() {
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value;
+  if (u === CREDS.user && p === CREDS.pass) {
+    localStorage.setItem('dwh_admin', '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    initAdmin();
+  } else {
+    document.getElementById('lerr').style.display = 'block';
+  }
+}
+function logout() { localStorage.removeItem('dwh_admin'); location.reload(); }
+function checkAuth() {
+  if (localStorage.getItem('dwh_admin') === '1') {
+    document.getElementById('loginScreen').style.display = 'none';
+    initAdmin();
+  }
+}
+
+/* ═══════════════════════ DATA ═══════════════════════ */
+const DEFAULT_Q = [
+  {id:1,q:"The secret of getting ahead is getting started.",a:"Mark Twain",cat:"success",img:"https://images.unsplash.com/photo-1519834785169-98be25ec3f84?w=600&q=80",bgOptions:["https://images.unsplash.com/photo-1519834785169-98be25ec3f84?w=600&q=80","https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80"]},
+  {id:2,q:"It does not matter how slowly you go as long as you do not stop.",a:"Confucius",cat:"wisdom",img:"https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80",bgOptions:["https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80"]},
+  {id:3,q:"Life is what happens when you're busy making other plans.",a:"John Lennon",cat:"life",img:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",bgOptions:["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"]},
+  {id:4,q:"A smooth sea never made a skilled sailor.",a:"African Proverb",cat:"proverbs",img:"https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80",bgOptions:["https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80"]},
+  {id:5,q:"Strive not to be a success, but rather to be of value.",a:"Albert Einstein",cat:"success",img:"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80",bgOptions:["https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80"]},
+];
+const DEFAULT_A = [
+  {id:1,cat:"wisdom",title:"10 Ancient Wisdom Principles That Still Work Today",preview:"From Stoic philosophy to Confucian thought, these timeless principles guide modern life.",img:"https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80",content:"<h3>Introduction</h3><p>Ancient wisdom endures because it speaks to the unchanging core of human experience.</p>"},
+  {id:2,cat:"success",title:"The Science of Daily Habits",preview:"Research shows 45% of our actions are habits. Here is how to wire the right ones.",img:"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80",content:"<h3>Why Habits Beat Willpower</h3><p>Willpower is finite. Habits run on autopilot.</p>"},
+];
+
+let Q = [], A = [];
+let editingId = null, editingType = null;
+let generatedQ = [];
+
+function loadData() {
+  try { Q = JSON.parse(localStorage.getItem('dwh_q') || 'null') || DEFAULT_Q; } catch { Q = DEFAULT_Q; }
+  try { A = JSON.parse(localStorage.getItem('dwh_a') || 'null') || DEFAULT_A; } catch { A = DEFAULT_A; }
+}
+function saveData() {
+  localStorage.setItem('dwh_q', JSON.stringify(Q));
+  localStorage.setItem('dwh_a', JSON.stringify(A));
+}
+
+/* ═══════════════════════ NAV ═══════════════════════ */
+function goPage(id, el) {
+  // Immediate visual feedback
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+  const target = document.getElementById('page-' + id);
+  if (!target) return;
+  target.classList.add('on');
+  if (el) el.classList.add('on');
+  const titles = { dashboard:'Dashboard', addQuote:'Add Quote', manageQ:'Manage Quotes', addArticle:'Add Article', manageA:'Manage Articles', aiQuotes:'AI Quote Generator', aiArticle:'AI Article Generator', notifications:'Notifications' };
+  document.getElementById('topTitle').textContent = titles[id] || id;
+  // Close sidebar immediately on mobile
+  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+  // Defer data load slightly so UI renders first
+  requestAnimationFrame(() => refresh(id));
+}
+
+// Add touchstart listeners for instant response (bypasses 300ms tap delay)
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      this.click();
+    }, { passive: false });
+  });
+});
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Instant touch for menu toggle button
+document.addEventListener('DOMContentLoaded', () => {
+  const menuBtn = document.querySelector('.menu-toggle');
+  if (menuBtn) {
+    menuBtn.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      toggleSidebar();
+    }, { passive: false });
+  }
+  // Instant touch for all .btn buttons
+  document.addEventListener('touchstart', function(e) {
+    const btn = e.target.closest('button.btn, .lbtn, .logout-btn, .tbtn');
+    if (btn) {
+      btn.style.opacity = '0.75';
+      setTimeout(() => btn.style.opacity = '', 150);
+    }
+  }, { passive: true });
+});
+
+function refresh(id) {
+  if (id === 'dashboard') renderDash();
+  else if (id === 'manageQ') renderQTable();
+  else if (id === 'manageA') renderATable();
+  else if (id === 'notifications') refreshTokens();
+}
+
+/* ═══════════════════════ DASHBOARD ═══════════════════════ */
+function renderDash() {
+  const liked = JSON.parse(localStorage.getItem('dwh_sv') || '[]').length;
+  document.getElementById('statsRow').innerHTML = [
+    { n: Q.length, l: '📝 Total Quotes' },
+    { n: A.length, l: '📖 Articles' },
+    { n: liked, l: '🔖 User Saved' },
+    { n: JSON.parse(localStorage.getItem('dwh_tokens')||'[]').length, l: '📲 Push Tokens' },
+  ].map(s => `<div class="stat-box"><div class="stat-num">${s.n}</div><div class="stat-label">${s.l}</div></div>`).join('');
+
+  document.getElementById('recentQ').innerHTML = `<table><thead><tr><th>Quote</th><th>Author</th><th>Category</th></tr></thead><tbody>${
+    [...Q].reverse().slice(0,6).map(q => `<tr>
+      <td><div class="ttext">"${q.q}"</div></td>
+      <td>${q.a}</td>
+      <td><span class="badge ${q.cat}">${q.cat}</span></td>
+    </tr>`).join('')
+  }</tbody></table>`;
+}
+
+/* ═══════════════════════ ADD QUOTE ═══════════════════════ */
+function addQuote() {
+  const text = document.getElementById('aq-text').value.trim();
+  const author = document.getElementById('aq-author').value.trim();
+  const cat = document.getElementById('aq-cat').value;
+  const img = document.getElementById('aq-img').value.trim();
+  const bg2 = document.getElementById('aq-bg2').value.trim();
+  const bg3 = document.getElementById('aq-bg3').value.trim();
+  if (!text || !author) { toast('⚠️ Quote text and author are required'); return; }
+  const fixedImg = fixImgUrl(img) || pickFallback(cat) || FALLBACK_IMGS.default;
+  const fixedBg2 = fixImgUrl(bg2);
+  const fixedBg3 = fixImgUrl(bg3);
+  const bgOptions = [fixedImg, ...(fixedBg2?[fixedBg2]:[]), ...(fixedBg3?[fixedBg3]:[])];
+  Q.push({ id: Date.now(), q: text, a: author, cat, img: bgOptions[0], bgOptions });
+  saveData();
+  toast('✅ Quote saved to site!');
+  clearQForm();
+}
+function clearQForm() {
+  ['aq-text','aq-author','aq-img','aq-bg2','aq-bg3'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  const p=document.getElementById('aq-prev'); if(p){p.style.backgroundImage='';p.textContent='Image preview';}
+}
+
+/* ═══════════════════════ ADD ARTICLE ═══════════════════════ */
+function addArticle() {
+  const title = document.getElementById('aa-title').value.trim();
+  const preview = document.getElementById('aa-preview').value.trim();
+  const content = document.getElementById('aa-content').value.trim();
+  const img = document.getElementById('aa-img').value.trim();
+  const cat = document.getElementById('aa-cat').value;
+  if (!title || !preview) { toast('⚠️ Title and preview are required'); return; }
+  const fixedAImg = fixImgUrl(img) || pickFallback(cat) || FALLBACK_IMGS.default;
+  A.push({ id: Date.now(), title, preview, content, cat, img: fixedAImg });
+  saveData();
+  toast('📤 Article published!');
+  clearAForm();
+}
+function clearAForm() {
+  ['aa-title','aa-preview','aa-content','aa-img'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  const p=document.getElementById('aa-prev'); if(p){p.style.backgroundImage='';p.textContent='Image preview';}
+}
+
+/* ═══════════════════════ MANAGE QUOTES ═══════════════════════ */
+function renderQTable(filter = '') {
+  const list = filter ? Q.filter(q => q.q.toLowerCase().includes(filter) || q.a.toLowerCase().includes(filter)) : Q;
+  document.getElementById('qTableBody').innerHTML = list.map(q => `<tr>
+    <td><div class="tthumb" style="background-image:url('${q.img||''}')"></div></td>
+    <td><div class="ttext" title="${q.q}">"${q.q}"</div></td>
+    <td>${q.a}</td>
+    <td><span class="badge ${q.cat}">${q.cat}</span></td>
+    <td><div style="display:flex;gap:6px">
+      <button class="btn success" style="font-size:10px;padding:5px 10px" onclick="editQuote(${q.id})">✏️ Edit</button>
+      <button class="btn danger" style="font-size:10px;padding:5px 10px" onclick="deleteQuote(${q.id})">🗑️</button>
+    </div></td>
+  </tr>`).join('');
+}
+function filterQTable(v) { renderQTable(v.toLowerCase()); }
+
+function deleteQuote(id) {
+  if (!confirm('Delete this quote?')) return;
+  Q = Q.filter(q => q.id !== id);
+  saveData(); renderQTable();
+  toast('🗑️ Quote deleted');
+}
+
+function editQuote(id) {
+  const q = Q.find(q => q.id === id); if (!q) return;
+  editingId = id; editingType = 'quote';
+  document.getElementById('modalTitle').textContent = '✏️ Edit Quote';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="fg"><label class="fl">Quote Text</label><textarea class="fi" id="em-q" style="min-height:72px">${q.q}</textarea></div>
+    <div class="fg"><label class="fl">Author</label><input class="fi" type="text" id="em-a" value="${q.a}"/></div>
+    <div class="fg"><label class="fl">Category</label><select class="fi" id="em-cat">${['motivation','love','savage','success','deep','captions'].map(c=>{const icons={motivation:'🚀',love:'💖',savage:'🔥',success:'💰',deep:'🌌',captions:'📸'};return `<option value="${c}"${q.cat===c?' selected':''}>${icons[c]||''} ${c.charAt(0).toUpperCase()+c.slice(1)}</option>`;}).join('')}</select></div>
+    <div class="fg"><label class="fl">Image URL</label><input class="fi" type="text" id="em-img" value="${q.img||''}"/></div>`;
+  document.getElementById('modalSave').onclick = () => {
+    q.q = document.getElementById('em-q').value.trim();
+    q.a = document.getElementById('em-a').value.trim();
+    q.cat = document.getElementById('em-cat').value;
+    const ni = document.getElementById('em-img').value.trim();
+    if (ni) { q.img = ni; if (!q.bgOptions) q.bgOptions = []; if (!q.bgOptions.includes(ni)) q.bgOptions.unshift(ni); }
+    saveData(); closeModal(); renderQTable();
+    toast('✅ Quote updated!');
+  };
+  document.getElementById('editModal').classList.add('open');
+}
+
+/* ═══════════════════════ MANAGE ARTICLES ═══════════════════════ */
+function renderATable() {
+  document.getElementById('aTableBody').innerHTML = A.map(a => `<tr>
+    <td><div class="tthumb" style="background-image:url('${a.img||''}')"></div></td>
+    <td><div class="ttext" title="${a.title}">${a.title}</div></td>
+    <td><span class="badge ${a.cat}">${a.cat}</span></td>
+    <td><div style="display:flex;gap:6px">
+      <button class="btn success" style="font-size:10px;padding:5px 10px" onclick="editArticle(${a.id})">✏️ Edit</button>
+      <button class="btn danger" style="font-size:10px;padding:5px 10px" onclick="deleteArticle(${a.id})">🗑️</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function deleteArticle(id) {
+  if (!confirm('Delete this article?')) return;
+  A = A.filter(a => a.id !== id);
+  saveData(); renderATable();
+  toast('🗑️ Article deleted');
+}
+
+function editArticle(id) {
+  const a = A.find(a => a.id === id); if (!a) return;
+  editingId = id; editingType = 'article';
+  document.getElementById('modalTitle').textContent = '✏️ Edit Article';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="fg"><label class="fl">Title</label><input class="fi" type="text" id="em-title" value="${a.title}"/></div>
+    <div class="fg"><label class="fl">Preview</label><textarea class="fi" id="em-prev" style="min-height:60px">${a.preview}</textarea></div>
+    <div class="fg"><label class="fl">Image URL</label><input class="fi" type="text" id="em-img" value="${a.img||''}"/></div>
+    <div class="fg"><label class="fl">Category</label><select class="fi" id="em-cat">${['motivation','love','savage','success','deep','captions'].map(c=>{const icons={motivation:'🚀',love:'💖',savage:'🔥',success:'💰',deep:'🌌',captions:'📸'};return `<option value="${c}"${a.cat===c?' selected':''}>${icons[c]||''} ${c.charAt(0).toUpperCase()+c.slice(1)}</option>`;}).join('')}</select></div>
+    <div class="fg"><label class="fl">Content (HTML)</label><textarea class="fi" id="em-content" style="min-height:110px">${a.content||''}</textarea></div>`;
+  document.getElementById('modalSave').onclick = () => {
+    a.title = document.getElementById('em-title').value.trim();
+    a.preview = document.getElementById('em-prev').value.trim();
+    a.img = fixImgUrl(document.getElementById('em-img').value.trim()) || pickFallback(a.cat);
+    a.cat = document.getElementById('em-cat').value;
+    a.content = document.getElementById('em-content').value;
+    saveData(); closeModal(); renderATable();
+    toast('✅ Article updated!');
+  };
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('editModal').classList.remove('open'); }
+
+/* ═══════════════════════ IMAGE PREVIEW ═══════════════════════ */
+// Category-specific fallback images
+const FALLBACK_IMGS = {
+  motivation:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+  love:      'https://images.unsplash.com/photo-1518519428374-aaa26fae20b4?w=800&q=80',
+  savage:    'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80',
+  success:   'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+  deep:      'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80',
+  captions:  'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80',
+  default:   'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80',
+};
+function pickFallback(cat) {
+  if (!cat) return FALLBACK_IMGS.default;
+  const key = cat.toLowerCase();
+  return FALLBACK_IMGS[key] || FALLBACK_IMGS.default;
+}
+
+// Auto-convert any image URL to a working direct URL
+function fixImgUrl(url) {
+  if (!url) return '';
+  url = url.trim();
+  // Unsplash page URL: unsplash.com/photos/abc or unsplash.com/photos/title-abc
+  const pageMatch = url.match(/unsplash\.com\/photos\/(?:[^/]+-)?([a-zA-Z0-9_-]{11,})/);
+  if (pageMatch) return `https://images.unsplash.com/photo-${pageMatch[1]}?w=800&q=80`;
+  // Unsplash direct but missing photo- prefix
+  const shortMatch = url.match(/images\.unsplash\.com\/([a-zA-Z0-9_-]{20,})(?:\?.*)?$/);
+  if (shortMatch && !shortMatch[1].startsWith('photo-')) return `https://images.unsplash.com/photo-${shortMatch[1]}?w=800&q=80`;
+  // Unsplash direct with photo- already — ensure params
+  const directMatch = url.match(/images\.unsplash\.com\/(photo-[a-zA-Z0-9_-]+)(\?.*)?$/);
+  if (directMatch) return `https://images.unsplash.com/${directMatch[1]}?w=800&q=80`;
+  // Any other valid http/https URL — return as-is
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return '';
+}
+
+function previewImg(url, targetId) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const fixed = fixImgUrl(url);
+  if (!fixed) { el.style.backgroundImage = ''; el.textContent = 'Image preview'; return; }
+  el.style.backgroundImage = `url('${fixed}')`;
+  el.textContent = '';
+}
+
+/* ═══════════════════════ AI QUOTE GENERATOR ═══════════════════════ */
+/* ══════════════════════════════════════════════════════
+   CAT IMAGE FALLBACKS (used when Unsplash keyword fails)
+══════════════════════════════════════════════════════ */
+const CAT_IMGS = {
+  success:    ['photo-1454165804606-c3d57bc86b40','photo-1552664730-d307ca884978','photo-1600880292203-757bb62b4baf','photo-1521737604893-d14cc237f11d'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  deep:       ['photo-1456513080510-7bf3a84b82f8','photo-1481627834876-b7833e8f5570','photo-1544716278-ca5e3f4abd8c','photo-1535905557558-afc4877a26fc'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  savage:     ['photo-1508739773434-c26b3d09e071','photo-1464822759023-fed622ff2c3b','photo-1500534314209-a25ddb2bd429','photo-1511300636408-a63a89df3482'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  wisdom:     ['photo-1507842217343-583bb7270b66','photo-1481627834876-b7833e8f5570','photo-1456513080510-7bf3a84b82f8','photo-1544716278-ca5e3f4abd8c'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  mindset:    ['photo-1516979187457-637abb4f9353','photo-1531297484001-80022131f5a1','photo-1522202176988-66273c2fd55f','photo-1524178232363-1fb2b075b655'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  discipline: ['photo-1541535650810-10d26f5c2ab3','photo-1552664730-d307ca884978','photo-1571019613454-1cb2f99b2d8b','photo-1488590528505-98d2b5aba04b'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  business:   ['photo-1497366216548-37526070297c','photo-1504868584819-f8e8b4b6d7e3','photo-1486312338219-ce68d2c6f44d','photo-1563986768609-322da13575f3'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  life:       ['photo-1506905925346-21bda4d32df4','photo-1441974231531-c6227db76b6e','photo-1470252649378-9c29740c9fa8','photo-1493246507139-91e8fad9978e'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  confidence: ['photo-1507003211169-0a1dd7228f2d','photo-1519389950473-47ba0277781c','photo-1573164713714-d95e436ab8d6','photo-1555421689-491a97ff2040'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  captions:   ['photo-1529156069898-49953e39b3ac','photo-1504701954957-2010ec3bcec1','photo-1476041800959-2f6bb412c8ce','photo-1432958576632-8a39f6b97dc7'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+  motivation: ['photo-1506905925346-21bda4d32df4','photo-1454165804606-c3d57bc86b40','photo-1519834785169-98be25ec3f84','photo-1549880338-65ddcdfd017b'].map(p=>`https://images.unsplash.com/${p}?w=900&q=80`),
+};
+
+/* ══════════════════════════════════════════════════════
+   ADVANCED AI QUOTE GENERATOR
+   - Auto category rotation (10 cats)
+   - Dedup via localStorage memory
+   - Unique Unsplash image per keyword
+   - SEO slug + meta per quote
+   - Realistic fictional authors
+══════════════════════════════════════════════════════ */
+
+const CAT_ROTATION = ['motivation','love','success','deep','savage','wisdom','mindset','discipline','business','life','confidence','captions'];
+const CAT_TOPICS   = {
+  motivation: ['what keeps you going when nothing else does','the fuel behind every great achievement','rising after hitting rock bottom'],
+  love:       ['loving yourself before anyone else','what real love actually looks like','healing through connection and vulnerability'],
+  success:    ['building empires from nothing','what winners do differently','the price of real success'],
+  deep:       ['the truth about human nature','what nobody tells you about life','the questions that change everything'],
+  savage:     ['cutting off dead weight','knowing your worth and walking away','never explaining yourself to anyone'],
+  wisdom:     ['ancient lessons that still apply','timeless principles for modern life','what the elders knew'],
+  mindset:    ['how champions think differently','rewiring your brain for success','the psychology of high achievers'],
+  discipline: ['doing the work when no one watches','the power of boring consistency','building unbreakable habits'],
+  business:   ['building wealth in the digital age','money mindset shifts that change everything','entrepreneurship truths'],
+  life:       ['finding meaning in everyday moments','the art of letting go and moving forward','living without regrets'],
+  confidence: ['owning your presence in any room','silencing self-doubt permanently','the body language of power'],
+  captions:   ['living unapologetically','the glow up nobody saw coming','staying unbothered and focused'],
+};
+const FICTION_AUTHORS = [
+  'Marcus A. Stone','Amara Nwosu','Daniel Okafor','Zara Mitchell','Kenji Watanabe',
+  'Lara Osei','Andre Blackwell','Nadia Ferreira','Solomon Adeyemi','Priya Sharma',
+  'Leon Baptiste','Zoe Mensah','Cairo Williams','Nia Obi','Elijah Cross',
+  'Aisha Dlamini','Kofi Asante','Fatima Al-Rashid','Xavier Patel','Imara Brooks',
+];
+
+/* ── Helpers ── */
+function genSlug(text) {
+  return (text||'').toLowerCase().replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,'-').substring(0,60);
+}
+function unsplashFromKeyword(kw) {
+  return `https://source.unsplash.com/1200x1600/?${encodeURIComponent((kw||'motivation').trim())}`;
+}
+function getCatIdx()  { return parseInt(localStorage.getItem('dwh_cat_idx')  || '0'); }
+function setCatIdx(i) { localStorage.setItem('dwh_cat_idx', String(i)); }
+function getGenHistory()    { try { return JSON.parse(localStorage.getItem('dwh_gen_history') || '[]'); } catch { return []; } }
+function saveGenHistory(a)  { localStorage.setItem('dwh_gen_history', JSON.stringify(a.slice(-500))); }
+function getArtHistory()    { try { return JSON.parse(localStorage.getItem('dwh_art_history') || '[]'); } catch { return []; } }
+function saveArtHistory(a)  { localStorage.setItem('dwh_art_history', JSON.stringify(a.slice(-200))); }
+function clearGenHistory()  { localStorage.removeItem('dwh_gen_history'); localStorage.removeItem('dwh_cat_idx'); document.getElementById('gen-stats').style.display='none'; toast('🗑 Quote memory cleared'); }
+function clearArtHistory()  { localStorage.removeItem('dwh_art_history'); toast('🗑 Article memory cleared'); }
+
+/* ── SAFE RESET: wipes only injector flags, never AI-generated quotes ── */
+function resetAll() {
+  if (!confirm('⚠️ Reset ALL data?\n\nThis will delete ALL quotes (including AI-generated ones) and articles.\n\nThis cannot be undone.')) return;
+  // Remove everything EXCEPT admin login
+  const adminKey = localStorage.getItem('dwh_admin');
+  localStorage.clear();
+  if (adminKey) localStorage.setItem('dwh_admin', adminKey);
+  toast('🗑 All data cleared. Reload to reinject base quotes.'); 
+  setTimeout(() => location.reload(), 1500);
+}
+
+/* ── SAFE: reset only injector flags so base quotes re-inject on next reload ── */
+function resetInjectorOnly() {
+  localStorage.removeItem('dwh_injected_v4');
+  localStorage.removeItem('dwh_art_v4');
+  toast('🔄 Injector flags cleared — base quotes will re-inject on next reload');
+}
+
+function isTooSimilar(newQ, existing) {
+  const nw = new Set(newQ.toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).filter(w=>w.length>3));
+  return existing.some(old => {
+    const ow = new Set((old||'').toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).filter(w=>w.length>3));
+    const inter = [...nw].filter(w=>ow.has(w));
+    return inter.length / Math.max(nw.size,1) > 0.55;
+  });
+}
+
+function updateGenStats(rejected) {
+  const hist = getGenHistory();
+  const next = CAT_ROTATION[(getCatIdx()) % CAT_ROTATION.length];
+  const el = document.getElementById('gen-stats');
+  if (!el) return;
+  el.style.display = 'block';
+  document.getElementById('gs-total').textContent = hist.length;
+  document.getElementById('gs-rej').textContent   = rejected;
+  document.getElementById('gs-next').textContent  = next;
+}
+
+async function genQuotes() {
+  let userTopic = document.getElementById('ai-topic').value.trim();
+  let cat       = document.getElementById('ai-cat').value;
+  const count   = parseInt(document.getElementById('ai-count').value) || 20;
+  const btn     = document.getElementById('genQBtn');
+
+  // Auto-rotate category
+  if (cat === 'auto') {
+    const idx = getCatIdx();
+    cat = CAT_ROTATION[idx % CAT_ROTATION.length];
+    setCatIdx((idx + 1) % CAT_ROTATION.length);
+  }
+
+  // Auto topic if blank
+  const topicPool = CAT_TOPICS[cat] || CAT_TOPICS.success;
+  const topic = userTopic || topicPool[Math.floor(Math.random() * topicPool.length)];
+
+  document.getElementById('gen-q-bar').classList.add('show');
+  document.getElementById('gen-q-results').innerHTML = '';
+  generatedQ = [];
+  if (btn) btn.disabled = true;
+
+  const history     = getGenHistory();
+  const allExisting = [...history, ...Q.map(q=>q.q)];
+  let rejected = 0;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        messages: [{ role: 'user', content:
+`You are a creative writer for Daniel Wisdom Hub. Generate ${count + 6} COMPLETELY UNIQUE quotes about "${topic}". Category: ${cat}.
+
+STRICT RULES:
+- NEVER use these clichés: "fall seven times", "be yourself", "chase your dreams", "believe in yourself", "sky is the limit"
+- Every quote must use a DIFFERENT structure: metaphor / blunt statement / question / irony / contrast / poetic imagery
+- Every quote must hit a DIFFERENT emotion: defiant, calm, urgent, melancholic, empowering, ironic, fierce, tender
+- Max 2 lines, max 25 words per quote
+- Author: use realistic fictional names only (no Anonymous, no real celebrities)
+- image_keyword: 2-3 words that visually represent the quote for Unsplash
+- desc: one punchy sentence describing the quote's message
+
+Return ONLY a raw JSON array — no markdown, no backticks, no explanation:
+[{"q":"quote","a":"Fictional Name","desc":"one sentence","image_keyword":"keyword phrase","style":"writing style","tone":"emotional tone"},...]` }]
+      })
+    });
+
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    let raw = (data.content||[]).map(b=>b.text||'').join('').trim();
+    raw = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();
+    const s = raw.indexOf('['), e = raw.lastIndexOf(']');
+    if (s === -1 || e === -1) throw new Error('No JSON array');
+    const parsed = JSON.parse(raw.slice(s, e+1));
+
+    const nowExisting = [...allExisting];
+    for (const q of parsed) {
+      if (!q.q || q.q.length < 10) continue;
+      if (isTooSimilar(q.q, nowExisting)) { rejected++; continue; }
+      generatedQ.push(q);
+      nowExisting.push(q.q);
+      if (generatedQ.length >= count) break;
+    }
+    if (!generatedQ.length) throw new Error('All duplicates');
+
+    renderGenQuotes(generatedQ, cat);
+    toast(`✅ ${generatedQ.length} unique quotes! (${rejected} rejected)`);
+  } catch(e) {
+    console.warn('AI gen failed:', e.message);
+    generatedQ = advancedFallback(topic, count, cat);
+    rejected = 0;
+    renderGenQuotes(generatedQ, cat);
+    toast('💡 Generated with smart templates');
+  }
+
+  updateGenStats(rejected);
+  document.getElementById('gen-q-bar').classList.remove('show');
+  if (btn) btn.disabled = false;
+}
+
+function advancedFallback(topic, n, cat) {
+  const POOLS = {
+    motivation:[
+      {q:'Show up even when the feeling is gone. That is the real test.',style:'truth',tone:'fierce'},
+      {q:'Motivation is the spark. Discipline is the fire that lasts.',style:'metaphor',tone:'direct'},
+      {q:'Not every day will feel electric. Do the work anyway.',style:'permission',tone:'firm'},
+      {q:'Waiting to feel ready is how years disappear.',style:'truth',tone:'urgent'},
+      {q:'Action creates motivation. Not the other way around.',style:'correction',tone:'direct'},
+      {q:'Your future self is counting on what you do right now.',style:'address',tone:'encouraging'},
+      {q:'One step forward beats ten plans that never moved.',style:'truth',tone:'blunt'},
+      {q:'You already know what to do. Start.',style:'imperative',tone:'sharp'},
+      {q:'Tired is not a reason to quit. It is a sign you are in it.',style:'reframe',tone:'fierce'},
+      {q:'Chase the goal. Not the applause.',style:'instruction',tone:'focused'},
+      {q:'Every champion was once a beginner who refused to stay there.',style:'truth',tone:'encouraging'},
+      {q:'Progress is proof. Keep going.',style:'staccato',tone:'grounded'},
+      {q:'The grind is not glamorous. The results are.',style:'contrast',tone:'honest'},
+      {q:'Breathe. Reset. Go again.',style:'triple',tone:'calming'},
+      {q:'Do it for the version of you waiting on the other side.',style:'address',tone:'hopeful'},
+      {q:'Your why must be louder than your excuses.',style:'truth',tone:'challenging'},
+      {q:'Nobody feels motivated at 5am. Champions show up anyway.',style:'observation',tone:'real'},
+      {q:'Fuel yourself with purpose when feelings run dry.',style:'instruction',tone:'empowering'},
+      {q:'Momentum is built by doing the small thing first.',style:'observation',tone:'strategic'},
+      {q:'Breathe in purpose. Breathe out doubt.',style:'metaphor',tone:'calming'},
+    ],
+    love:[
+      {q:'Love that requires you to shrink is not love. It is control.',style:'distinction',tone:'sharp'},
+      {q:'The right person will not make you question if you are enough.',style:'truth',tone:'reassuring'},
+      {q:'Loving yourself is the foundation. Everything else is built on top.',style:'reframe',tone:'empowering'},
+      {q:'Heal first. Love second. In that order.',style:'instruction',tone:'firm'},
+      {q:'Some connections teach. Some stay. Both are necessary.',style:'truth',tone:'reflective'},
+      {q:'Real love does not exhaust you. It restores you.',style:'distinction',tone:'wise'},
+      {q:'The way someone treats you when angry tells you everything.',style:'observation',tone:'real'},
+      {q:'You cannot pour from empty. Fill yourself first.',style:'metaphor',tone:'gentle'},
+      {q:'Choose people who choose you. Repeatedly.',style:'instruction',tone:'firm'},
+      {q:'Attachment is not the same as love. Know the difference.',style:'distinction',tone:'honest'},
+      {q:'The heart that forgives itself heals the fastest.',style:'truth',tone:'tender'},
+      {q:'Love should feel like home, not a performance.',style:'metaphor',tone:'tender'},
+      {q:'Self-love is not a destination. It is a daily practice.',style:'redefinition',tone:'gentle'},
+      {q:'You deserve the love you freely give to others.',style:'declaration',tone:'empowering'},
+      {q:'Missing someone and needing them back are two different things.',style:'distinction',tone:'honest'},
+      {q:'Do not love someone into changing. Love someone already whole.',style:'instruction',tone:'direct'},
+      {q:'Not every love story ends badly. Some just end. That is okay.',style:'permission',tone:'gentle'},
+      {q:'Boundaries are the door with your name on the lock.',style:'metaphor',tone:'empowering'},
+      {q:'The best relationship you will ever have is with yourself.',style:'truth',tone:'empowering'},
+      {q:'Love that does not grow you is just comfort in disguise.',style:'metaphor',tone:'challenging'},
+    ],
+    success:[
+      {q:'Quiet people are not weak. They are conserving ammunition.',style:'ironic',tone:'defiant'},
+      {q:'What you tolerate today trains people for tomorrow.',style:'direct',tone:'firm'},
+      {q:'Your comfort zone has an expiration date.',style:'blunt',tone:'urgent'},
+      {q:'Reputation is built in public. Character is built alone.',style:'contrast',tone:'reflective'},
+      {q:'Stop explaining yourself to people who have already decided.',style:'imperative',tone:'fierce'},
+      {q:'Nobody remembers who prepared most. They remember who delivered.',style:'truth',tone:'sharp'},
+      {q:'Skills get you in the room. Character keeps you there.',style:'contrast',tone:'wise'},
+      {q:'The shortcut is always longer than the path.',style:'paradox',tone:'ironic'},
+      {q:'Execution is the rarest talent in the room.',style:'observation',tone:'real'},
+      {q:'Average is safe. Safe is forgettable.',style:'contrast',tone:'provocative'},
+      {q:'Do it scared. Do it tired. Just do it.',style:'triple',tone:'fierce'},
+      {q:'Closed mouths do not get fed.',style:'proverb',tone:'direct'},
+      {q:'Build quietly. Arrive loudly.',style:'contrast',tone:'confident'},
+      {q:'Potential expires. Execution does not.',style:'contrast',tone:'urgent'},
+      {q:'Winning once is luck. Winning twice is method.',style:'logical',tone:'analytical'},
+      {q:'Broke is temporary. Poor is a mindset.',style:'distinction',tone:'empowering'},
+      {q:'Did you rest, or did you hide?',style:'question',tone:'challenging'},
+      {q:'If it scares you a little, it is probably right.',style:'conditional',tone:'encouraging'},
+      {q:'Most people overplan and underact. Reverse that.',style:'imperative',tone:'blunt'},
+      {q:'Two things compound: interest and discipline.',style:'short',tone:'sharp'},
+    ],
+    deep:[
+      {q:'Every person carries a weight you cannot see. Be gentle.',style:'observation',tone:'empathetic'},
+      {q:'What breaks you teaches you what you refused to learn willingly.',style:'paradox',tone:'philosophical'},
+      {q:'Grief is just love with nowhere left to go.',style:'redefinition',tone:'melancholic'},
+      {q:'Rest is not laziness. It is growth happening underground.',style:'metaphor',tone:'gentle'},
+      {q:'Not every wound becomes a scar. Some become doorways.',style:'metaphor',tone:'hopeful'},
+      {q:'Healing is remembering who you were before the world told you who to be.',style:'redefinition',tone:'hopeful'},
+      {q:'Time does not heal all wounds. Intentionality does.',style:'correction',tone:'honest'},
+      {q:'What you feel but cannot name still deserves your attention.',style:'permission',tone:'gentle'},
+      {q:'Depth is uncomfortable. That is how you know you are in it.',style:'observation',tone:'honest'},
+      {q:'Some silences say more than years of conversation.',style:'observation',tone:'poetic'},
+      {q:'You are not a burden. You are carrying too much alone.',style:'distinction',tone:'tender'},
+      {q:'Growth spirals. You will pass the same lessons again, wiser.',style:'truth',tone:'calming'},
+      {q:'Home is when you stop performing.',style:'redefinition',tone:'tender'},
+      {q:'The things you resist most are usually what you need most.',style:'paradox',tone:'challenging'},
+      {q:'We mistake busyness for purpose and wonder why we feel empty.',style:'observation',tone:'raw'},
+      {q:'Identity is not who you are born. It is who you choose to remain.',style:'redefinition',tone:'reflective'},
+      {q:'Forgiveness stops them living rent-free in your chest.',style:'reframe',tone:'liberating'},
+      {q:'Some people arrive to stay. Some arrive to teach. Both matter.',style:'classification',tone:'wise'},
+      {q:'The loudest room in the world is inside a grieving person.',style:'metaphor',tone:'melancholic'},
+      {q:'You do not need closure from them. You need it from yourself.',style:'reframe',tone:'liberating'},
+    ],
+    savage:[
+      {q:'Unbothered is a lifestyle, not an attitude.',style:'redefinition',tone:'confident'},
+      {q:'They watched. Then they copied. Now they claim.',style:'staccato',tone:'raw'},
+      {q:'Soft hearts need hard boundaries.',style:'paradox',tone:'blunt'},
+      {q:'Silence confused them. Good.',style:'short',tone:'savage'},
+      {q:'Your absence teaches what your presence never could.',style:'truth',tone:'cold'},
+      {q:'Outgrow them quietly. Outdress them loudly.',style:'contrast',tone:'fierce'},
+      {q:'Forgive. Forget. Never re-invite.',style:'list',tone:'firm'},
+      {q:'Loyalty is tested in bad times. Watch who disappears.',style:'observation',tone:'real'},
+      {q:'Being underestimated is a strategy. Let them.',style:'reframe',tone:'calculating'},
+      {q:'Protect your energy like it is currency. Because it is.',style:'simile',tone:'firm'},
+      {q:'Glow different.',style:'two-word',tone:'confident'},
+      {q:'Healed people do not beg.',style:'truth',tone:'sharp'},
+      {q:'Not everyone deserves an explanation.',style:'declaration',tone:'firm'},
+      {q:'Choose peace daily. Guard it violently.',style:'contrast',tone:'fierce'},
+      {q:'Winning without noise is the loudest statement.',style:'paradox',tone:'confident'},
+      {q:'Plot twist: you were never the villain.',style:'reframe',tone:'ironic'},
+      {q:'The people testing you already know your limits. Surprise them.',style:'challenge',tone:'defiant'},
+      {q:'Stop being available to people who only call when they need something.',style:'imperative',tone:'sharp'},
+      {q:'Some bridges are meant to be burned. Let the fire light your way.',style:'metaphor',tone:'liberating'},
+      {q:'Healing looks quiet from the outside. It is war on the inside.',style:'contrast',tone:'raw'},
+    ],
+    wisdom:[
+      {q:'Ask the question you are afraid to ask. It contains the answer.',style:'instruction',tone:'wise'},
+      {q:'Advice is autobiography. Take it as a lens, not a law.',style:'reframe',tone:'discerning'},
+      {q:'Not knowing is fine. Pretending to know is where trouble begins.',style:'distinction',tone:'honest'},
+      {q:'Learn the rule. Master it. Then know when to break it.',style:'sequence',tone:'strategic'},
+      {q:'Certainty is comfortable. Curiosity is useful.',style:'contrast',tone:'wise'},
+      {q:'Judge the idea, not the person carrying it.',style:'instruction',tone:'fair'},
+      {q:'Old mistakes revisited with new eyes are called wisdom.',style:'redefinition',tone:'reflective'},
+      {q:'Slow down enough to notice what fast is causing you to miss.',style:'instruction',tone:'reflective'},
+      {q:'Most arguments end the moment someone defines their terms.',style:'observation',tone:'ironic'},
+      {q:'Knowledge borrowed is information. Knowledge tested is wisdom.',style:'distinction',tone:'precise'},
+      {q:'Read slowly. Think twice. Speak once.',style:'list',tone:'deliberate'},
+      {q:'The wisest people in the room are usually the quietest.',style:'observation',tone:'calm'},
+      {q:'The lesson hides inside the thing you least want to examine.',style:'metaphor',tone:'challenging'},
+      {q:'The map is not the territory. The menu is not the meal.',style:'analogy',tone:'philosophical'},
+      {q:'What you do not know is the most interesting part of any conversation.',style:'reframe',tone:'curious'},
+      {q:'Understand the system before you try to change it.',style:'instruction',tone:'strategic'},
+      {q:'A question asked at the right time beats a year of searching.',style:'truth',tone:'wise'},
+      {q:'Your assumptions are someone else conclusions. Verify them.',style:'instruction',tone:'discerning'},
+      {q:'A person who reads widely is never truly alone.',style:'truth',tone:'quiet'},
+      {q:'The opinion of someone who has never tried should weigh nothing on you.',style:'logic',tone:'firm'},
+    ],
+    mindset:[
+      {q:'Your brain is wired for survival, not happiness. Rewire it.',style:'distinction',tone:'direct'},
+      {q:'Readiness is a myth told by the comfortable.',style:'reframe',tone:'challenging'},
+      {q:'Identity shift first. Behavior change follows.',style:'sequence',tone:'strategic'},
+      {q:'You think 60,000 thoughts a day. How many are actually yours?',style:'question',tone:'provocative'},
+      {q:'The story you tell about yourself is the cage or the key.',style:'metaphor',tone:'empowering'},
+      {q:'Small consistent actions defeat grand occasional ones every time.',style:'truth',tone:'firm'},
+      {q:'Do not confuse movement with direction.',style:'distinction',tone:'sharp'},
+      {q:'Overthinking is creativity pointed at the wrong problem.',style:'redefinition',tone:'reframing'},
+      {q:'Environment shapes behavior faster than willpower does.',style:'truth',tone:'strategic'},
+      {q:'Discipline is the highest form of self-respect.',style:'redefinition',tone:'empowering'},
+      {q:'One focused hour beats ten distracted ones every time.',style:'truth',tone:'direct'},
+      {q:'Progress is not about momentum. It is about not stopping.',style:'redefinition',tone:'calm'},
+      {q:'What you repeat becomes reflex. Choose carefully.',style:'instruction',tone:'precise'},
+      {q:'Default mode is not neutral. It is retreat.',style:'reframe',tone:'urgent'},
+      {q:'You cannot think your way to a new identity. Act your way there.',style:'correction',tone:'direct'},
+      {q:'Your triggers are a map. Follow them inward.',style:'metaphor',tone:'wise'},
+      {q:'Fear of failure is just imagination used against you.',style:'redefinition',tone:'reframing'},
+      {q:'The mind that questions everything has the power to change everything.',style:'paradox',tone:'empowering'},
+      {q:'The version of you that argues with every thought will exhaust you.',style:'observation',tone:'honest'},
+      {q:'Choosing to be interested instead of anxious is the biggest shift.',style:'reframe',tone:'calming'},
+    ],
+    discipline:[
+      {q:'Show up on your worst day. That is the only day that counts.',style:'truth',tone:'fierce'},
+      {q:'Motivation is a visitor. Discipline is a resident.',style:'metaphor',tone:'direct'},
+      {q:'You are not tired. You are avoiding the discomfort of starting.',style:'reframe',tone:'blunt'},
+      {q:'Do the boring thing consistently. Boring compounds.',style:'instruction',tone:'calm'},
+      {q:'Systems outlast motivation. Build the system.',style:'imperative',tone:'strategic'},
+      {q:'Hard things first. Everything else is easier after.',style:'instruction',tone:'direct'},
+      {q:'No mood. No music. No caffeine. Still showed up.',style:'staccato',tone:'gritty'},
+      {q:'The schedule does not care about your feelings. Neither should you.',style:'blunt',tone:'firm'},
+      {q:'Start before you are ready. Finish when you said you would.',style:'instruction',tone:'direct'},
+      {q:'Talent without structure is potential with an expiration date.',style:'metaphor',tone:'urgent'},
+      {q:'Today discipline. Tomorrow freedom.',style:'contrast',tone:'motivating'},
+      {q:'Discipline is just remembering what you wanted when you wanted it.',style:'redefinition',tone:'honest'},
+      {q:'Two hours focused beats eight hours distracted.',style:'truth',tone:'analytical'},
+      {q:'The athlete and the artist share one thing: neither waits for inspiration.',style:'observation',tone:'philosophical'},
+      {q:'Showed up. Did the work. That is the whole secret.',style:'staccato',tone:'direct'},
+      {q:'Every I will start Monday votes against the person you want to become.',style:'reframe',tone:'sharp'},
+      {q:'Rest on the schedule. Not on the feeling.',style:'instruction',tone:'strategic'},
+      {q:'One degree of consistent effort changes entire trajectories.',style:'truth',tone:'empowering'},
+      {q:'The days you least want to do it are the days it matters most.',style:'truth',tone:'challenging'},
+      {q:'Accountability is the gap between wanting and having.',style:'redefinition',tone:'precise'},
+    ],
+    business:[
+      {q:'The best product rarely wins. The best distribution does.',style:'truth',tone:'blunt'},
+      {q:'Revenue is vanity. Profit is sanity. Cash flow is reality.',style:'triple',tone:'direct'},
+      {q:'Hire for how people think. Train for what they know.',style:'distinction',tone:'precise'},
+      {q:'Speed beats perfection in version one.',style:'truth',tone:'strategic'},
+      {q:'Every employee is a first impression of your culture.',style:'reframe',tone:'honest'},
+      {q:'Solve a problem people already know they have.',style:'instruction',tone:'strategic'},
+      {q:'Scale the process, not the chaos.',style:'instruction',tone:'direct'},
+      {q:'A business without a clear offer is an expensive hobby.',style:'distinction',tone:'blunt'},
+      {q:'Talk to ten customers before writing one line of code.',style:'instruction',tone:'strategic'},
+      {q:'Cash in the bank is the only metric that never lies.',style:'truth',tone:'direct'},
+      {q:'Your best salesperson is a customer who tells their friends.',style:'observation',tone:'wise'},
+      {q:'Document everything. Memory is the most expensive storage.',style:'instruction',tone:'pragmatic'},
+      {q:'Being cheap is not a competitive advantage. It is a race nobody wins.',style:'truth',tone:'blunt'},
+      {q:'The real competition is customer inertia, not other companies.',style:'reframe',tone:'strategic'},
+      {q:'Build in public. Fail in public. Grow in public.',style:'triple',tone:'bold'},
+      {q:'Cash is not a metric. It is oxygen.',style:'metaphor',tone:'urgent'},
+      {q:'The meeting that could have been an email is a tax on poor culture.',style:'reframe',tone:'sharp'},
+      {q:'No business was ever killed by too much customer feedback.',style:'truth',tone:'direct'},
+      {q:'Build one thing so well that using anything else feels strange.',style:'instruction',tone:'strategic'},
+      {q:'Your price tells people what to think before they experience you.',style:'observation',tone:'strategic'},
+    ],
+    life:[
+      {q:'Not every season is for growing. Some are for surviving.',style:'permission',tone:'gentle'},
+      {q:'The life you want waits just past the conversation you keep avoiding.',style:'metaphor',tone:'challenging'},
+      {q:'You get to change your mind. That is not weakness. That is data.',style:'permission',tone:'empowering'},
+      {q:'Slow down. You are not behind. You are somewhere different.',style:'reassurance',tone:'gentle'},
+      {q:'The people who love you without conditions are the rarest wealth.',style:'truth',tone:'tender'},
+      {q:'Not every question needs an answer today.',style:'permission',tone:'calming'},
+      {q:'Some of the best things arrive looking like problems.',style:'truth',tone:'hopeful'},
+      {q:'Joy is not found at the destination. It is built into how you travel.',style:'metaphor',tone:'hopeful'},
+      {q:'Say the kind thing out loud. Keep the unkind thought to yourself.',style:'instruction',tone:'gentle'},
+      {q:'The long way around is often the only way through.',style:'truth',tone:'patient'},
+      {q:'A full life is not a packed schedule. It is a present one.',style:'distinction',tone:'reflective'},
+      {q:'The ordinary Tuesday contains more life than most people notice.',style:'observation',tone:'mindful'},
+      {q:'You are allowed to want different things than five years ago.',style:'permission',tone:'liberating'},
+      {q:'Comparison is suffering with a name attached to it.',style:'redefinition',tone:'honest'},
+      {q:'Pick the hill you are willing to die on. Let the rest go.',style:'instruction',tone:'decisive'},
+      {q:'Some bridges are meant to be burned. Let the fire light your way.',style:'metaphor',tone:'liberating'},
+      {q:'Home is when you stop performing.',style:'redefinition',tone:'tender'},
+      {q:'Nobody life looks like their highlight reel from the inside.',style:'truth',tone:'honest'},
+      {q:'Regret the things you tried more gently than the things you never did.',style:'instruction',tone:'wise'},
+      {q:'You do not need to earn rest.',style:'permission',tone:'gentle'},
+    ],
+    confidence:[
+      {q:'You are not too much. You are in the wrong room.',style:'reframe',tone:'empowering'},
+      {q:'Confidence is knowing you will survive either way.',style:'redefinition',tone:'grounded'},
+      {q:'Stand in your own light. Stop letting others cast the shadow.',style:'metaphor',tone:'fierce'},
+      {q:'Walk in like you belong. You do.',style:'instruction',tone:'bold'},
+      {q:'Shrinking does not protect you. It makes you invisible.',style:'truth',tone:'challenging'},
+      {q:'The most attractive thing you can do is stop seeking approval.',style:'observation',tone:'confident'},
+      {q:'Hold your ground without raising your voice.',style:'instruction',tone:'grounded'},
+      {q:'You are not arrogant for knowing your worth. You are awake.',style:'reframe',tone:'empowering'},
+      {q:'Doubt is not a stop sign. It is a yellow light.',style:'metaphor',tone:'calming'},
+      {q:'Choose yourself first. Everyone else will adjust.',style:'instruction',tone:'firm'},
+      {q:'Own your story before someone else edits it.',style:'instruction',tone:'urgent'},
+      {q:'Confidence is built rep by rep, not thought by thought.',style:'truth',tone:'direct'},
+      {q:'Nobody who did big things felt ready. They just started.',style:'observation',tone:'encouraging'},
+      {q:'You do not need permission to be who you already are.',style:'declaration',tone:'fierce'},
+      {q:'Apologizing for who you are is the most expensive habit you own.',style:'reframe',tone:'challenging'},
+      {q:'The audacity to try is already more than most people manage.',style:'truth',tone:'encouraging'},
+      {q:'The right people will not need you to make yourself smaller.',style:'truth',tone:'liberating'},
+      {q:'Wear the thing. Take the trip. Make the call.',style:'triple',tone:'encouraging'},
+      {q:'Take the compliment. Say thank you. Move on.',style:'instruction',tone:'direct'},
+      {q:'You owe no one an apology for existing fully.',style:'declaration',tone:'fierce'},
+    ],
+    captions:[
+      {q:'Main character behavior only.',style:'declaration',tone:'bold'},
+      {q:'Not for everyone. Specifically not for everyone.',style:'ironic',tone:'confident'},
+      {q:'Healing, thriving, and minding my business.',style:'list',tone:'peaceful'},
+      {q:'The glow-up is internal. The results are external.',style:'contrast',tone:'confident'},
+      {q:'Not competing. Just completing.',style:'wordplay',tone:'calm'},
+      {q:'Different energy. Different results.',style:'contrast',tone:'bold'},
+      {q:'Still here. Still building. Still grateful.',style:'triple',tone:'grounded'},
+      {q:'Less explaining. More becoming.',style:'contrast',tone:'confident'},
+      {q:'Doing it quietly on purpose.',style:'staccato',tone:'intentional'},
+      {q:'You will understand when you get here.',style:'address',tone:'knowing'},
+      {q:'Soft life. Hard boundaries.',style:'contrast',tone:'balanced'},
+      {q:'Not lucky. Prepared.',style:'correction',tone:'confident'},
+      {q:'Growing season. Do not disturb.',style:'metaphor',tone:'focused'},
+      {q:'The vibe is intentional.',style:'declaration',tone:'confident'},
+      {q:'Exactly where I am supposed to be.',style:'declaration',tone:'peaceful'},
+      {q:'Did it my way. Would do it again.',style:'declaration',tone:'proud'},
+      {q:'Moved differently. Ate well. Slept early.',style:'list',tone:'disciplined'},
+      {q:'Chose peace and kept choosing it.',style:'declaration',tone:'settled'},
+      {q:'Arrived late. Left early. Enjoyed every second.',style:'staccato',tone:'carefree'},
+      {q:'Dressed like a prayer. Moving like a promise.',style:'simile',tone:'poetic'},
+    ],
+  };
+  const pool = POOLS[cat] || POOLS.motivation;
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  const existing = getGenHistory();
+  const out = [];
+  for (const s of shuffled) {
+    if (out.length >= n) break;
+    if (isTooSimilar(s.q, existing)) continue;
+    out.push({
+      q: s.q,
+      a: FICTION_AUTHORS[out.length % FICTION_AUTHORS.length],
+      cat,
+      desc: s.style.charAt(0).toUpperCase() + s.style.slice(1) + ' — ' + s.tone + ' tone.',
+      image_keyword: cat + ' ' + s.tone,
+      style: s.style,
+      tone: s.tone
+    });
+  }
+  return out;
+}
+
+function renderGenQuotes(quotes, cat) {
+  const validQuotes = quotes.filter(Boolean);
+  document.getElementById('gen-q-results').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 12px;flex-wrap:wrap;gap:8px">
+      <span style="font-size:13px;font-weight:700;color:var(--green)">✅ ${validQuotes.length} unique quotes · ${cat}</span>
+      <button class="btn prim" style="font-size:11px" onclick="addAllGenQ('${cat}')">➕ Add All (${validQuotes.length})</button>
+    </div>
+    <div class="gen-q-list">${validQuotes.map((q,i) => {
+      const slug = genSlug(q.q);
+      return `
+      <div class="gen-q-item" id="gqi${i}" style="border-left:3px solid var(--p)">
+        <div class="gen-q-body" style="flex:1;min-width:0">
+          <div class="gen-q-text" style="margin-bottom:5px">"${q.q}"</div>
+          <div class="gen-q-meta" style="margin-bottom:5px">— ${q.a}</div>
+          ${q.desc ? `<div style="font-size:10px;color:var(--mute);margin-bottom:5px">📝 ${q.desc}</div>` : ''}
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            ${q.style ? `<span style="font-size:9px;background:rgba(139,92,246,.15);color:var(--p);padding:2px 7px;border-radius:50px">✍ ${q.style}</span>`:''}
+            ${q.tone  ? `<span style="font-size:9px;background:rgba(236,72,153,.15);color:#ec4899;padding:2px 7px;border-radius:50px">🎭 ${q.tone}</span>`:''}
+            <span style="font-size:9px;background:rgba(255,255,255,.05);color:var(--mute);padding:2px 7px;border-radius:50px">🔗 /${cat}/${slug.substring(0,22)}…</span>
+          </div>
+        </div>
+        <div class="gen-q-acts" style="flex-direction:column;gap:5px;align-items:flex-end;flex-shrink:0">
+          <button class="btn success" style="font-size:10px;padding:5px 9px;white-space:nowrap" onclick="addOneGenQ(${i},'${cat}')">➕ Add</button>
+          <button class="btn danger"  style="font-size:10px;padding:5px 9px" onclick="removeGenQ(${i})">✕</button>
+        </div>
+      </div>`; }).join('')}
+    </div>`;
+}
+
+function addOneGenQ(i, cat) {
+  const q = generatedQ[i]; if (!q) return;
+  const imgUrl      = unsplashFromKeyword(q.image_keyword || cat);
+  const fallback    = CAT_IMGS[cat] || CAT_IMGS.wisdom || [];
+  const slug        = genSlug(q.q);
+  const newQ = {
+    id: Date.now() + i, q: q.q, a: q.a, cat,
+    desc: q.desc || '', slug: `/${cat}/${slug}`,
+    img: imgUrl, bgOptions: [imgUrl, ...fallback.slice(0,2)]
+  };
+  Q.push(newQ);
+  const hist = getGenHistory(); hist.push(q.q); saveGenHistory(hist);
+  saveData();
+  const el = document.getElementById('gqi' + i);
+  if (el) { el.style.opacity='.4'; el.querySelector('.btn.success').textContent='✅ Added'; }
+  toast('✅ Quote added!');
+}
+
+function addAllGenQ(cat) {
+  const fallback = CAT_IMGS[cat] || CAT_IMGS.wisdom || [];
+  const hist     = getGenHistory();
+  let added      = 0;
+  generatedQ.filter(Boolean).forEach((q, i) => {
+    const imgUrl = unsplashFromKeyword(q.image_keyword || cat);
+    const slug   = genSlug(q.q);
+    Q.push({ id: Date.now()+i, q:q.q, a:q.a, cat, desc:q.desc||'', slug:`/${cat}/${slug}`, img:imgUrl, bgOptions:[imgUrl,...fallback.slice(0,2)] });
+    hist.push(q.q); added++;
+  });
+  saveGenHistory(hist); saveData();
+  try { renderFeed(true); renderDash(); } catch(e) {}
+  document.getElementById('gen-q-results').innerHTML = `
+    <div style="text-align:center;padding:24px">
+      <div style="font-size:28px;margin-bottom:8px">✅</div>
+      <div style="font-weight:700;color:var(--green);font-size:15px">${added} quotes published to site!</div>
+      <div style="font-size:12px;color:var(--mute);margin-top:6px">Categories and feed updated automatically</div>
+    </div>`;
+  toast(`✅ ${added} quotes added!`);
+}
+
+function removeGenQ(i) {
+  document.getElementById('gqi'+i)?.remove();
+  generatedQ[i] = null;
+}
+
+/* ══════════════════════════════════════════════════════
+   ADVANCED AI ARTICLE GENERATOR
+   - Unique style each time (5 styles)
+   - SEO title + meta description
+   - Unique Unsplash image via keyword
+   - Dedup by title similarity
+   - Regenerate without reload
+══════════════════════════════════════════════════════ */
+
+let _pendingArticle = null;
+const ART_STYLES = ['narrative story','step-by-step guide','psychological analysis','counterintuitive take','data-driven breakdown'];
+
+function isTitleSimilar(title, existing) {
+  const t = (title||'').toLowerCase();
+  return existing.some(e => {
+    const words = (e||'').toLowerCase().split(' ').filter(w=>w.length>4);
+    return words.filter(w=>t.includes(w)).length / Math.max(words.length,1) > 0.5;
+  });
+}
+
+async function genArticle() {
+  const topic = document.getElementById('ai-art-topic').value.trim();
+  const cat   = document.getElementById('ai-art-cat').value;
+  const styleEl = document.getElementById('ai-art-style');
+  const btn   = document.getElementById('genABtn');
+  if (!topic) { toast('⚠️ Enter a topic first'); return; }
+
+  let style = styleEl ? styleEl.value : 'auto';
+  if (style === 'auto') style = ART_STYLES[Date.now() % ART_STYLES.length];
+
+  document.getElementById('gen-a-bar').classList.add('show');
+  document.getElementById('gen-a-result').innerHTML = '';
+  _pendingArticle = null;
+  if (btn) btn.disabled = true;
+
+  const artHist      = getArtHistory();
+  const existingTitles = A.map(a=>a.title).concat(artHist);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2500,
+        messages: [{ role: 'user', content:
+`Write a UNIQUE "${style}" article about: "${topic}" for Daniel Wisdom Hub. Category: ${cat}.
+
+AVOID titles similar to: ${existingTitles.slice(-8).join(' | ')}
+DO NOT start with generic openers like "In today's world" or "Are you struggling with".
+Make it specific, bold, and different from typical motivational content.
+
+Return ONLY raw JSON — no markdown, no backticks:
+{
+  "title": "Compelling SEO title (max 60 chars, no clickbait)",
+  "meta_desc": "SEO meta description (120-155 chars, includes topic naturally)",
+  "preview": "2-sentence hook that creates genuine curiosity",
+  "image_keyword": "3-word Unsplash search term (visual, not abstract)",
+  "slug": "url-friendly-slug",
+  "content": "<h2>Bold Section Title</h2><p>Specific, story-driven content. Minimum 400 words. Real examples. Actionable steps. No fluff.</p><h2>Section 2</h2><p>...</p><h2>Key Takeaway</h2><p>...</p>"
+}` }]
+      })
+    });
+
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    let raw = (data.content||[]).map(b=>b.text||'').join('').trim();
+    raw = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();
+    const s = raw.indexOf('{'), e = raw.lastIndexOf('}');
+    if (s === -1) throw new Error('No JSON object');
+    const art = JSON.parse(raw.slice(s, e+1));
+    if (isTitleSimilar(art.title, existingTitles)) art.title = art.title + ': A New Perspective';
+    _pendingArticle = { art, cat };
+    showGenArticle(art, cat);
+    toast('✅ Unique article generated!');
+  } catch(e) {
+    console.warn('Article gen failed:', e.message);
+    const T = topic.charAt(0).toUpperCase() + topic.slice(1);
+    const angles = ['The Uncomfortable Truth About','Why Most People Fail At','The Hidden Side of','What Nobody Tells You About'];
+    const angle  = angles[Date.now() % angles.length];
+    const fallArt = {
+      title: `${angle} ${T}`,
+      meta_desc: `A fresh perspective on ${topic} that challenges conventional thinking and gives you actionable steps to change.`,
+      preview: `What if the way most people approach ${topic} is fundamentally backwards? Here is what the evidence actually shows.`,
+      image_keyword: topic + ' perspective',
+      slug: genSlug(`${angle} ${T}`),
+      content: `<h2>The Uncomfortable Truth</h2><p>Most people approach ${topic} the wrong way. They look for motivation, hacks, or the "right moment." But the people who actually succeed with ${topic} share one trait: they act before they feel ready.</p><h2>What Actually Works</h2><p>Research on high performers consistently shows that consistency beats intensity. The person who works on ${topic} for 30 minutes daily outperforms the one who works for 5 hours once a week — every single time.</p><h2>The Practice Nobody Wants to Hear</h2><p>There is no shortcut. The practice is ordinary: identify what matters, eliminate what does not, and show up — quietly, without fanfare, day after day. The results compound in ways that feel like magic but are actually just math.</p><h2>Your Move</h2><p>The gap between where you are and where you want to be with ${topic} is not talent, luck, or resources. It is the number of times you chose action when inaction felt easier. Start today. Start small. Start now.</p>`
+    };
+    _pendingArticle = { art: fallArt, cat };
+    showGenArticle(fallArt, cat);
+    toast('💡 Generated with smart templates');
+  }
+
+  document.getElementById('gen-a-bar').classList.remove('show');
+  if (btn) btn.disabled = false;
+}
+
+function showGenArticle(art, cat) {
+  const imgUrl = unsplashFromKeyword(art.image_keyword || cat);
+  const slug   = art.slug || genSlug(art.title);
+  document.getElementById('gen-a-result').innerHTML = `
+    <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:14px">
+      <div style="height:160px;background:url('${imgUrl}') center/cover;position:relative">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7))"></div>
+        <div style="position:absolute;bottom:10px;left:12px;display:flex;gap:6px;align-items:center">
+          <span class="badge ${cat}" style="font-size:9px">${cat}</span>
+          ${art.meta_desc ? `<span style="font-size:9px;color:rgba(255,255,255,.6)">SEO ready ✓</span>` : ''}
+        </div>
+      </div>
+      <div style="padding:18px">
+        ${art.meta_desc ? `<div style="font-size:10px;color:var(--mute);margin-bottom:6px;font-style:italic">📌 ${art.meta_desc}</div>` : ''}
+        <div style="font-size:10px;color:var(--mute);margin-bottom:10px">🔗 /${cat}/${slug}</div>
+        <h3 style="font-size:17px;font-weight:700;margin:0 0 10px;line-height:1.3">${art.title}</h3>
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:14px;font-weight:500;line-height:1.5">${art.preview}</p>
+        <div style="font-size:13px;line-height:1.75;color:var(--txt2);max-height:220px;overflow-y:auto;padding-right:4px">${art.content}</div>
+        <div class="btn-row" style="margin-top:16px;gap:8px">
+          <button class="btn prim" style="flex:2" onclick="publishGenArticle()">📤 Publish to Site</button>
+          <button class="btn sec" onclick="genArticle()">🔄 Regenerate</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function publishGenArticle() {
+  if (!_pendingArticle) { toast('❌ No article pending'); return; }
+  try {
+    const { art, cat } = _pendingArticle;
+    const imgUrl = unsplashFromKeyword(art.image_keyword || cat);
+    const slug   = art.slug || genSlug(art.title);
+    A.push({ id:Date.now(), title:art.title, preview:art.preview, content:art.content, cat, img:imgUrl, slug:`/${cat}/${slug}`, meta_desc:art.meta_desc||'' });
+    const hist = getArtHistory(); hist.push(art.title); saveArtHistory(hist);
+    saveData(); _pendingArticle = null;
+    try { renderArts(); renderDash(); } catch(e) {}
+    document.getElementById('gen-a-result').innerHTML = `
+      <div style="text-align:center;padding:28px">
+        <div style="font-size:32px;margin-bottom:10px">✅</div>
+        <div style="font-weight:700;color:var(--green);font-size:15px">Article published!</div>
+        <div style="font-size:12px;color:var(--mute);margin-top:6px">/${cat}/${slug}</div>
+      </div>`;
+    toast('📤 Article published!');
+  } catch(e) { toast('❌ Publish failed: ' + e.message); }
+}
+
+/* ═══════════════════════ FIREBASE ═══════════════════════ */
+const FB_PROJECT = 'daniel-wisdom-hub';
+const FB_BASE    = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents`;
+
+/* ═══════════════════════ NOTIFICATIONS ═══════════════════════ */
+async function refreshTokens() {
+  const el = document.getElementById('tokenList');
+  if (!el) return;
+  el.textContent = '⏳ Loading tokens from Firebase…';
+  try {
+    const res  = await fetch(`${FB_BASE}/push_tokens`);
+    const data = await res.json();
+    const docs = data.documents || [];
+
+    // Update push token stat on dashboard
+    document.querySelectorAll('.stat-num').forEach((el, i) => {
+      if (el.nextElementSibling?.textContent?.includes('Push Tokens')) el.textContent = docs.length;
+    });
+    // Cache in localStorage for dashboard count
+    localStorage.setItem('dwh_tokens', JSON.stringify(
+      docs.map(d => ({ token: d.fields?.token?.stringValue, date: d.fields?.date?.stringValue }))
+    ));
+
+    if (!docs.length) {
+      el.textContent = 'No push tokens yet.\nTokens appear here when users enable notifications on the site.';
+      return;
+    }
+    el.textContent = docs.map((d, i) => {
+      const f = d.fields || {};
+      return `Token ${i+1} [${f.platform?.stringValue || 'unknown'}] — ${f.date?.stringValue || ''}\n${f.token?.stringValue || ''}`;
+    }).join('\n\n');
+  } catch(e) {
+    el.textContent = '❌ Could not load tokens from Firebase.\nMake sure Firestore is in test mode.';
+    console.error(e);
+  }
+}
+
+async function clearTokens() {
+  if (!confirm('Clear all push tokens from Firebase?')) return;
+  const el = document.getElementById('tokenList');
+  el.textContent = '⏳ Clearing…';
+  try {
+    const res  = await fetch(`${FB_BASE}/push_tokens`);
+    const data = await res.json();
+    const docs = data.documents || [];
+    await Promise.all(docs.map(d =>
+      fetch(d.name.replace('https://firestore.googleapis.com/v1/', 'https://firestore.googleapis.com/v1/'), { method: 'DELETE' })
+    ));
+    localStorage.removeItem('dwh_tokens');
+    refreshTokens();
+    toast('🗑️ All tokens cleared from Firebase');
+  } catch(e) {
+    toast('❌ Could not clear tokens'); console.error(e);
+  }
+}
+
+function previewNotif() {
+  const title = document.getElementById('nt-title').value || 'Daniel Wisdom Hub ✨';
+  const body = document.getElementById('nt-body').value || 'Your daily wisdom quote is ready.';
+  document.getElementById('notif-preview-wrap').innerHTML = `
+    <div class="notif-preview">
+      <div class="np-icon">🔔</div>
+      <div>
+        <div class="np-title">${title}</div>
+        <div class="np-body">${body}</div>
+      </div>
+    </div>`;
+}
+
+async function sendNotif() {
+  const title = (document.getElementById('nt-title').value || 'Daniel Wisdom Hub ✨').trim();
+  const body  = (document.getElementById('nt-body').value  || '').trim();
+  const url   = (document.getElementById('nt-url').value   || '/').trim();
+  if (!body) { toast('⚠️ Enter a message first'); return; }
+
+  const btn = document.querySelector('button[onclick="sendNotif()"]');
+  const origText = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Sending...'; }
+
+  try {
+    const res = await fetch('/.netlify/functions/send-push', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, body, url })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      toast('✅ Sent to ' + data.sent + ' user' + (data.sent !== 1 ? 's' : '') + (data.failed ? ' (' + data.failed + ' failed)' : '') + '!');
+      fetch(FB_BASE + '/notifications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields: { title: { stringValue: title }, body: { stringValue: body }, sentAt: { stringValue: new Date().toISOString() }, sent: { integerValue: data.sent } } })
+      }).catch(() => {});
+    } else { throw new Error(data.error || 'Server error'); }
+  } catch(e) {
+    if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        await reg.showNotification(title, { body, icon: '/icon.png', data: { url } });
+        toast('⚠️ Sent to this device only — function offline');
+      } catch(e2) { toast('❌ Failed: ' + e.message); }
+    } else { toast('❌ Failed: ' + e.message); }
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = origText; }
+  }
+}
+
+/* ═══════════════════════ TOAST ═══════════════════════ */
+let tt;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2700);
+}
+
+/* ═══════════════════════ INIT ═══════════════════════ */
+function initAdmin() {
+  loadData();
+  renderDash();
+  renderQTable();
+  renderATable();
+  refreshTokens();
+}
+
+checkAuth();
+</script>
+</body>
+</html>
